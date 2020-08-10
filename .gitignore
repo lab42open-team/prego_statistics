@@ -1,0 +1,9 @@
+## Ignore all plots and tsv files
+
+*.png
+
+*.tsv
+.Rhistory
+.RData
+*.swp
+*.dmp
