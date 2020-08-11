@@ -5,7 +5,7 @@ library(Rfast)
 #library(vegan) #needs to installed globally
 ## file loading
 
-mgnify_associations <- read_delim("/data/databases/scripts/gathering_data/mgnify/mgnify_markergene_associations.tsv", delim = "\t", col_names = F)
+mgnify_associations <- read_delim("/data/databases/scripts/gathering_data/mgnify/mgnify_markergene_associations.tsv", delim = "\t", col_names = F) %>% select(-10)
 colnames(mgnify_associations) <- c("type_1","term_1","type_2","term_2","source","evidence","MI","status","url")
 
 mgnify_sample_entity_sources <- read_delim("/data/databases/scripts/gathering_data/mgnify/sample_entity_sources.tsv", delim = "\t", col_names = F)
