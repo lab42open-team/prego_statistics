@@ -5,22 +5,14 @@ library(Rfast)
 #library(vegan) #needs to installed globally
 ## file loading
 
-mgnify_associations <- read_delim("mgnify_markergene_associations.tsv", delim = "\t", col_names = F)
+mgnify_associations <- read_delim("/data/databases/scripts/gathering_data/mgnify/mgnify_markergene_associations.tsv", delim = "\t", col_names = F)
 colnames(mgnify_associations) <- c("type_1","term_1","type_2","term_2","source","evidence","MI","status","url")
 
-mgnify_sample_entity_sources <- read_delim("sample_entity_sources.tsv", delim = "\t", col_names = F)
+mgnify_sample_entity_sources <- read_delim("/data/databases/scripts/gathering_data/mgnify/sample_entity_sources.tsv", delim = "\t", col_names = F)
 colnames(mgnify_sample_entity_sources) <- c("sample_id","type","term_id")
 
-mgnify_taxon_sample <- read_delim("taxon_sample_abundance.tsv", delim = "\t", col_names = F)
+mgnify_taxon_sample <- read_delim("/data/databases/scripts/gathering_data/mgnify/taxon_sample_abundance.tsv", delim = "\t", col_names = F)
 colnames(mgnify_taxon_sample) <- c("ncbi_id","sample_id")
-
-ncbi_tax_rank <- read_delim("ncbi_tax_rank.tsv", delim = "\t", col_names = F)
-colnames(ncbi_tax_rank) <- c("ncbi_id","rank")
-
-ncbi_species_kingdom <- read_delim("categories.tsv",delim = "\t", col_names = F)
-colnames(ncbi_species_kingdom) <- c("kingdom","species_level","ncbi_id")
-
-mgnify_taxon_sample <- mgnify_taxon_sample %>% left_join(ncbi_tax_rank, by=c("ncbi_id"="ncbi_id"))
 
 ## load taxonomy
 
@@ -29,6 +21,8 @@ colnames(ncbi_tax_rank) <- c("ncbi_id","rank")
 
 ncbi_species_kingdom <- read_delim("categories.tsv",delim = "\t", col_names = F)
 colnames(ncbi_species_kingdom) <- c("kingdom","species_level","ncbi_id")
+
+mgnify_taxon_sample <- mgnify_taxon_sample %>% left_join(ncbi_tax_rank, by=c("ncbi_id"="ncbi_id"))
 
 ## Mgnify terms and the samples they are tagged summary 
 
