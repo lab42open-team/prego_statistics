@@ -14,15 +14,13 @@ colnames(mgnify_sample_entity_sources) <- c("sample_id","type","term_id")
 mgnify_taxon_sample <- read_delim("/data/databases/scripts/gathering_data/mgnify/taxon_sample_abundance.tsv", delim = "\t", col_names = F)
 colnames(mgnify_taxon_sample) <- c("ncbi_id","sample_id")
 
-## load taxonomy
-
-ncbi_tax_rank <- read_delim("ncbi_tax_rank.tsv", delim = "\t", col_names = F)
-colnames(ncbi_tax_rank) <- c("ncbi_id","rank")
-
-ncbi_species_kingdom <- read_delim("categories.tsv",delim = "\t", col_names = F)
-colnames(ncbi_species_kingdom) <- c("kingdom","species_level","ncbi_id")
-
-mgnify_taxon_sample <- mgnify_taxon_sample %>% left_join(ncbi_tax_rank, by=c("ncbi_id"="ncbi_id"))
+#ncbi_tax_rank <- read_delim("ncbi_tax_rank.tsv", delim = "\t", col_names = F)
+#colnames(ncbi_tax_rank) <- c("ncbi_id","rank")
+#
+#ncbi_species_kingdom <- read_delim("categories.tsv",delim = "\t", col_names = F)
+#colnames(ncbi_species_kingdom) <- c("kingdom","species_level","ncbi_id")
+#
+#mgnify_taxon_sample <- mgnify_taxon_sample %>% left_join(ncbi_tax_rank, by=c("ncbi_id"="ncbi_id"))
 
 ## Mgnify terms and the samples they are tagged summary 
 
@@ -53,76 +51,78 @@ mgnify_sample_entity_sources_summary_log_plot <- ggplot()+
 ggsave(filename = "plots/mgnify_sample_entity_sources_summary_log_plot.png",plot = mgnify_sample_entity_sources_summary_log_plot,device = "png")
 
 
-## Mgnify taxon NCBI ids and the samples they are associated with
-
-
-mgnify_taxon_sample_summary_ncbi_per_sample <- mgnify_taxon_sample %>% group_by(ncbi_id) %>% summarise(total_samples=n()) %>% group_by(total_samples) %>% summarise(total_ncbi_ids=n())
-
-mgnify_taxon_sample_summary_ncbi_per_sample_plot <- ggplot()+
-  geom_point(data = mgnify_taxon_sample_summary_ncbi_per_sample, aes(x=total_samples,y=total_ncbi_ids))+
-  xlab("NCBI ids background size (no. of samples)")+
-  ylab("Number of NCBI ids")+
-  ggtitle("Mgnify NCBI ids and the samples they are tagged distribution")+
-  theme_bw()
-
-ggsave(filename = "plots/mgnify_taxon_sample_summary_ncbi_per_sample_plot.png",plot = mgnify_taxon_sample_summary_ncbi_per_sample_plot,device = "png")
-
-
-### NCBI ids per sample id distribution
-
-mgnify_taxon_sample_summary_sample_per_ncbi <- mgnify_taxon_sample %>% group_by(sample_id) %>% summarise(total_ncbi_ids=n()) %>% group_by(total_ncbi_ids) %>% summarise(total_samples=n()) %>% mutate(cumsum_total_samples=cumsum(total_samples))
-
+### Mgnify taxon NCBI ids and the samples they are associated with
+#
+#
+#mgnify_taxon_sample_summary_ncbi_per_sample <- mgnify_taxon_sample %>% group_by(ncbi_id) %>% summarise(total_samples=n()) %>% group_by(total_samples) %>% summarise(total_ncbi_ids=n())
+#
+### load taxonomy
+#
+#mgnify_taxon_sample_summary_ncbi_per_sample_plot <- ggplot()+
+#  geom_point(data = mgnify_taxon_sample_summary_ncbi_per_sample, aes(x=total_samples,y=total_ncbi_ids))+
+#  xlab("NCBI ids background size (no. of samples)")+
+#  ylab("Number of NCBI ids")+
+#  ggtitle("Mgnify NCBI ids and the samples they are tagged distribution")+
+#  theme_bw()
+#
+#ggsave(filename = "plots/mgnify_taxon_sample_summary_ncbi_per_sample_plot.png",plot = mgnify_taxon_sample_summary_ncbi_per_sample_plot,device = "png")
+#
+#
+#### NCBI ids per sample id distribution
+#
+#mgnify_taxon_sample_summary_sample_per_ncbi <- mgnify_taxon_sample %>% group_by(sample_id) %>% summarise(total_ncbi_ids=n()) %>% group_by(total_ncbi_ids) %>% summarise(total_samples=n()) %>% mutate(cumsum_total_samples=cumsum(total_samples))
+#
 ## test of normality of the log normal transformation
 
-shapiro.test(log(mgnify_taxon_sample_summary_sample_per_ncbi$total_ncbi_ids))
-
-
-mgnify_taxon_sample_summary_sample_per_ncbi_plot <- ggplot()+
-  geom_point(data = mgnify_taxon_sample_summary_sample_per_ncbi, aes(x=total_ncbi_ids,y=total_samples))+
-  xlab("Size of Samples (no. NCBI ids)")+
-  ylab("Number of Samples")+
-  ggtitle("Mgnify NCBI ids and the samples they contain distribution")+
-  theme_bw()
-
-ggsave(filename = "plots/mgnify_taxon_sample_summary_sample_per_ncbi_plot.png",plot = mgnify_taxon_sample_summary_sample_per_ncbi_plot,device = "png")
-
-### cumulative distribution of the sample size in terms of NCBI ids
-
-mgnify_taxon_sample_summary_sample_per_ncbi_cumulative_plot <- ggplot()+
-  geom_point(data = mgnify_taxon_sample_summary_sample_per_ncbi, aes(x=total_ncbi_ids,y=cumsum_total_samples))+
-  xlab("Size of Samples (no. NCBI ids)")+
-  ylab("Cumulative Number of Samples")+
-  ggtitle("Mgnify NCBI ids and the samples contain cumulative distribution")+
-  theme_bw()
-
-ggsave(filename = "plots/mgnify_taxon_sample_summary_sample_per_ncbi_cumulative_plot.png",plot = mgnify_taxon_sample_summary_sample_per_ncbi_cumulative_plot,device = "png")
-
-summary(mgnify_taxon_sample_summary_sample_per_ncbi) 
-
-mgnify_taxon_sample_summary_sample_per_ncbi_log_plot <- ggplot()+
-  geom_point(data = mgnify_taxon_sample_summary_sample_per_ncbi, aes(x=log(total_ncbi_ids),y=log(total_samples)))+
-  xlab("ln - Size of Samples (no. NCBI ids)")+
-  ylab("ln - Number of Samples")+
-  ggtitle("Mgnify NCBI ids and the samples they are tagged distribution")+
-  theme_bw()
-
-ggsave(filename = "plots/mgnify_taxon_sample_summary_sample_per_ncbi_log_plot.png",plot = mgnify_taxon_sample_summary_sample_per_ncbi_log_plot,device = "png")
-
-#### test per ncbi taxonomic rank 
-
-mgnify_taxon_sample %>% distinct(ncbi_id,rank) %>% group_by(rank) %>% summarize(total_ids=n())
-
-mgnify_taxon_sample_summary_sample_per_ncbi_per_rank <- mgnify_taxon_sample %>% group_by(sample_id,rank) %>% summarise(total_ncbi_ids=n()) %>% group_by(total_ncbi_ids,rank) %>% summarise(total_samples=n())
-
-mgnify_taxon_sample_summary_sample_per_ncbi_per_rank_plot <- ggplot()+
-  geom_point(data = mgnify_taxon_sample_summary_sample_per_ncbi_per_rank, aes(x=total_ncbi_ids,y=total_samples))+
-  xlab("Number of NCBI ids")+
-  ylab("Number of Samples")+
-  ggtitle("Mgnify NCBI ids and the samples they are tagged distribution")+
-  theme_bw()+
-  facet_grid(rows=vars(rank), scales = "free")
-
-ggsave(filename = "plots/mgnify_taxon_sample_summary_sample_per_ncbi_per_rank_plot.png",plot = mgnify_taxon_sample_summary_sample_per_ncbi_per_rank_plot,device = "png")
+#shapiro.test(log(mgnify_taxon_sample_summary_sample_per_ncbi$total_ncbi_ids))
+#
+#
+#mgnify_taxon_sample_summary_sample_per_ncbi_plot <- ggplot()+
+#  geom_point(data = mgnify_taxon_sample_summary_sample_per_ncbi, aes(x=total_ncbi_ids,y=total_samples))+
+#  xlab("Size of Samples (no. NCBI ids)")+
+#  ylab("Number of Samples")+
+#  ggtitle("Mgnify NCBI ids and the samples they contain distribution")+
+#  theme_bw()
+#
+#ggsave(filename = "plots/mgnify_taxon_sample_summary_sample_per_ncbi_plot.png",plot = mgnify_taxon_sample_summary_sample_per_ncbi_plot,device = "png")
+#
+#### cumulative distribution of the sample size in terms of NCBI ids
+#
+#mgnify_taxon_sample_summary_sample_per_ncbi_cumulative_plot <- ggplot()+
+#  geom_point(data = mgnify_taxon_sample_summary_sample_per_ncbi, aes(x=total_ncbi_ids,y=cumsum_total_samples))+
+#  xlab("Size of Samples (no. NCBI ids)")+
+#  ylab("Cumulative Number of Samples")+
+#  ggtitle("Mgnify NCBI ids and the samples contain cumulative distribution")+
+#  theme_bw()
+#
+#ggsave(filename = "plots/mgnify_taxon_sample_summary_sample_per_ncbi_cumulative_plot.png",plot = mgnify_taxon_sample_summary_sample_per_ncbi_cumulative_plot,device = "png")
+#
+#summary(mgnify_taxon_sample_summary_sample_per_ncbi) 
+#
+#mgnify_taxon_sample_summary_sample_per_ncbi_log_plot <- ggplot()+
+#  geom_point(data = mgnify_taxon_sample_summary_sample_per_ncbi, aes(x=log(total_ncbi_ids),y=log(total_samples)))+
+#  xlab("ln - Size of Samples (no. NCBI ids)")+
+#  ylab("ln - Number of Samples")+
+#  ggtitle("Mgnify NCBI ids and the samples they are tagged distribution")+
+#  theme_bw()
+#
+#ggsave(filename = "plots/mgnify_taxon_sample_summary_sample_per_ncbi_log_plot.png",plot = mgnify_taxon_sample_summary_sample_per_ncbi_log_plot,device = "png")
+#
+##### test per ncbi taxonomic rank 
+#
+#mgnify_taxon_sample %>% distinct(ncbi_id,rank) %>% group_by(rank) %>% summarize(total_ids=n())
+#
+#mgnify_taxon_sample_summary_sample_per_ncbi_per_rank <- mgnify_taxon_sample %>% group_by(sample_id,rank) %>% summarise(total_ncbi_ids=n()) %>% group_by(total_ncbi_ids,rank) %>% summarise(total_samples=n())
+#
+#mgnify_taxon_sample_summary_sample_per_ncbi_per_rank_plot <- ggplot()+
+#  geom_point(data = mgnify_taxon_sample_summary_sample_per_ncbi_per_rank, aes(x=total_ncbi_ids,y=total_samples))+
+#  xlab("Number of NCBI ids")+
+#  ylab("Number of Samples")+
+#  ggtitle("Mgnify NCBI ids and the samples they are tagged distribution")+
+#  theme_bw()+
+#  facet_grid(rows=vars(rank), scales = "free")
+#
+#ggsave(filename = "plots/mgnify_taxon_sample_summary_sample_per_ncbi_per_rank_plot.png",plot = mgnify_taxon_sample_summary_sample_per_ncbi_per_rank_plot,device = "png")
 
 
 ## Mgnify and all associations including their score. The original output file
@@ -147,15 +147,15 @@ ggsave(filename = "plots/mgnify_taxon_sample_summary_sample_per_ncbi_per_rank_pl
 ### count term_1 samples for background_term_1
 
 mgnify_taxon_sample_background_term_1 <- mgnify_taxon_sample %>% group_by(ncbi_id) %>% summarise(background_term_1=n())
-
-mgnify_associations_evidence <- mgnify_associations %>% extract(evidence, c("samples", "background_term_2"), "([[:digit:]]+) of ([[:digit:]]+)*.") %>% left_join(mgnify_taxon_sample_background_term_1, by=c("term_1"="ncbi_id")) %>% left_join(ncbi_tax_rank, by=c("term_1"="ncbi_id")) %>% left_join(ncbi_species_kingdom, by=c("term_1"="ncbi_id"))
-
+#
+mgnify_associations_evidence <- mgnify_associations %>% extract(evidence, c("samples", "background_term_2"), "([[:digit:]]+) of ([[:digit:]]+)*.") %>% left_join(mgnify_taxon_sample_background_term_1, by=c("term_1"="ncbi_id")) #%>% left_join(ncbi_tax_rank, by=c("term_1"="ncbi_id")) %>% left_join(ncbi_species_kingdom, by=c("term_1"="ncbi_id"))
+#
 mgnify_associations_evidence$samples <- as.numeric(mgnify_associations_evidence$samples)
 mgnify_associations_evidence$background_term_2 <- as.numeric(mgnify_associations_evidence$background_term_2)
-
-#### Associations and their taxonomic rank 
-table(mgnify_associations_evidence$rank)
-
+#
+##### Associations and their taxonomic rank 
+#table(mgnify_associations_evidence$rank)
+#
 ### backgrounds are not correlated
 cor(mgnify_associations_evidence$background_term_1,mgnify_associations_evidence$background_term_2)
 ### score summary
