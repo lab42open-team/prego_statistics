@@ -21,7 +21,7 @@ total_samples <-nrow(all_samples)
 
 all_data <- all_samples %>% left_join(mgnify_sample_entity_sources,by=c("sample_id"="sample_id")) %>% left_join(mgnify_taxon_sample, by=c("sample_id"="sample_id"))
 
-all_data_bipartite <- all_data %>% group_by(term_id,type,ncbi_id) %>% summarise(total_samples=n())
+all_data_bipartite <- all_data %>% group_by(term_id,type,ncbi_id) %>% summarise(total_associations=n()) %>% mutate(associations_freq=total_associations/as.numeric(total_samples))
 
 #ncbi_tax_rank <- read_delim("ncbi_tax_rank.tsv", delim = "\t", col_names = F)
 #colnames(ncbi_tax_rank) <- c("ncbi_id","rank")
@@ -35,7 +35,6 @@ all_data_bipartite <- all_data %>% group_by(term_id,type,ncbi_id) %>% summarise(
 
 mgnify_sample_entity_sources_samples <- mgnify_sample_entity_sources %>% group_by(type,sample_id) %>% summarise(total_terms=n()) # the tagger can assign multiple terms of a specific type (e.g multiple ENVO terms) 
 
-mgnify_sample_entity_sources_terms <- mgnify_sample_entity_sources %>% group_by(type,term_id) %>% summarise(total_samples=n())
 mgnify_sample_entity_sources_summary <- mgnify_sample_entity_sources %>% group_by(type,term_id) %>% summarise(total_samples=n()) %>% group_by(type,total_samples) %>% summarize(total_terms=n())
 
 mgnify_sample_entity_sources_summary_plot <- ggplot()+
@@ -155,8 +154,11 @@ ggsave(filename = "plots/mgnify_sample_entity_sources_summary_log_plot.png",plot
 
 ### count term_1 samples for background_term_1
 
-mgnify_taxon_sample_background_term_1 <- mgnify_taxon_sample %>% group_by(ncbi_id) %>% summarise(background_term_1=n())
-#
+mgnify_taxon_sample_background_term_1 <- mgnify_taxon_sample  %>% group_by(ncbi_id) %>% summarise(background_term_1=n()) %>% mutate(background_term_1_freq=background_term_1/as.numeric(total_samples))
+
+
+mgnify_sample_entity_sources_background_term_2 <- mgnify_sample_entity_sources %>% group_by(type,term_id) %>% summarise(background_term_2=n()) %>% mutate(ckground_term_2_freq=background_term_2/as.numeric(total_samples))
+
 mgnify_associations_evidence <- mgnify_associations %>% extract(evidence, c("samples", "background_term_2"), "([[:digit:]]+) of ([[:digit:]]+)*.") %>% left_join(mgnify_taxon_sample_background_term_1, by=c("term_1"="ncbi_id")) #%>% left_join(ncbi_tax_rank, by=c("term_1"="ncbi_id")) %>% left_join(ncbi_species_kingdom, by=c("term_1"="ncbi_id"))
 #
 mgnify_associations_evidence$samples <- as.numeric(mgnify_associations_evidence$samples)
