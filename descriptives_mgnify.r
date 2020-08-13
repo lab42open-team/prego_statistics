@@ -2,6 +2,7 @@
 
 library(tidyverse)
 library(Rfast)
+library(infotheo)
 #library(vegan) #needs to installed globally
 ## file loading
 
@@ -13,6 +14,14 @@ colnames(mgnify_sample_entity_sources) <- c("sample_id","type","term_id")
 
 mgnify_taxon_sample <- read_delim("/data/databases/scripts/gathering_data/mgnify/taxon_sample_abundance.tsv", delim = "\t", col_names = F)
 colnames(mgnify_taxon_sample) <- c("ncbi_id","sample_id")
+
+all_samples <- as_tibble(unique(c(unique(mgnify_sample_entity_sources$sample_id),unique(mgnify_taxon_sample$sample_id))))
+colnames(all_samples) <- "sample_id"
+total_samples <-nrow(all_samples)
+
+all_data <- all_samples %>% left_join(mgnify_sample_entity_sources,by=c("sample_id"="sample_id")) %>% left_join(mgnify_taxon_sample, by=c("sample_id"="sample_id"))
+
+all_data_bipartite <- all_data %>% group_by(term_id,type,ncbi_id) %>% summarise(total_samples=n())
 
 #ncbi_tax_rank <- read_delim("ncbi_tax_rank.tsv", delim = "\t", col_names = F)
 #colnames(ncbi_tax_rank) <- c("ncbi_id","rank")
@@ -226,7 +235,6 @@ samples_without_ncbi_ids <- mgnify_sample_entity_sources %>% distinct(sample_id)
 samples_without_metadata <- mgnify_taxon_sample %>% distinct(sample_id) %>% filter(!(sample_id %in% unique(mgnify_sample_entity_sources$sample_id)))
 colnames(mgnify_sample_entity_sources) <- c("sample_id","type","term_id")
 
-total_samples <- length(unique(c(unique(mgnify_sample_entity_sources$sample_id),unique(mgnify_taxon_sample$sample_id))))
 
 ### Empirical Mutual Information calculation
 
