@@ -155,7 +155,7 @@ colnames(mgnify_sample_entity_sources) <- c("sample_id","type","term_id")
 
 ### Empirical Mutual Information calculation
 
-mgnify_associations_evidence <- mgnify_associations_evidence %>% mutate(joint=samples/total_samples) %>% mutate(random=(background_term_1/total_samples)*(background_term_2/total_samples)) %>% mutate(mutual_info=joint*log(joint/random)) %>% mutate(PMI=log(joint/random)) %>% mutate(norm_MI=(MI/max(MI))*100)
+mgnify_associations_evidence <- mgnify_associations_evidence %>% mutate(joint=samples/total_samples) %>% mutate(random=(background_term_1/total_samples)*(background_term_2/total_samples)) %>% mutate(mutual_info=joint*log(joint/random)) %>% mutate(PMI=log(joint/random)) %>% mutate(norm_MI=(MI/max(MI))*100) %>% mutate(MD=log((joint^2)/random)) + mutate(odds_ratio=((samples*(total_samples-background_term_2-background_term_1)))/((background_term_1-samples)*(background_term_2-samples)))
 
 mgnify_associations_evidence_norm_MI_plot <- mgnify_associations_evidence %>% group_by(norm_MI, type_2) %>% summarise(count_associations=n()) %>% ggplot() +
   geom_point(aes(x=norm_MI, y=count_associations, colour=factor(type_2)))+
