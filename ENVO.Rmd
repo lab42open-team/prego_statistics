@@ -1,0 +1,158 @@
+---
+title: "Environmental Process"
+output: html_notebook
+---
+
+```{r, warning=FALSE}
+library(tidyverse)
+library(ontologyIndex)
+library(igraph)
+library(tidygraph)
+
+```
+## ENVO
+
+This markdown contains info about [ENVO](http://environmentontology.org)
+
+## Data loading
+
+This chunk loads the obo file of the ENVO ontology. It then creates a tibble with the name, children and parent of each ENVO term ID. The relationships between each term is "is_a". So the column "children" has the parents of each particular term, anwsering athe question "which Ids are the parents of this child Id". Respectively the column "parent" contains the children of the respective term.
+
+```{r}
+
+envo_obo <- get_OBO(file = "envo-basic.obo.txt",propagate_relationships = "is_a",extract_tags = "everything")
+
+envo <- tibble(Name=envo_obo$name, Id=envo_obo$id, parents=envo_obo$parents, children=envo_obo$children)
+envo_name <- tibble(Name=envo_obo$name, Id=envo_obo$id)
+
+```
+
+
+### Transformation to long format
+
+Children and Parent are in list structure so in the next chunk I transformed them in long format
+
+```{r}
+
+
+children <- lapply(envo$children,FUN = unlist)
+parent <- lapply(envo$parents,FUN = unlist)
+
+children_df <- do.call(rbind,lapply(children, as.data.frame)) %>% rownames_to_column("children") %>% mutate(children=gsub(x = children,pattern = "\\..*","",replacement = "")) %>% dplyr::rename("Id"="X[[i]]")
+
+parent_df <- do.call(rbind,lapply(parent, as.data.frame))%>% rownames_to_column("parent") %>% mutate(parent=gsub(x = parent,pattern = "\\..*","",replacement = "")) %>% dplyr::rename("Id"="X[[i]]")
+
+
+envo_df <- envo_name %>% left_join(parent_df,by = c("Id"="Id")) %>% left_join(children_df, by = c("Id"="Id"))
+
+freshwater <- envo_df[grep("freshwater",x = envo_df$Name),]
+
+
+```
+
+## EnvO as Network
+
+Exporatory procedure: remove all lines that that have both children and parent columns empty.
+
+
+```{r}
+without_parents <- envo_df[is.na(envo_df$children),]
+
+
+envo_df_parents <- envo_df %>% filter(!c(is.na(children) & !is.na(parent)))
+
+
+```
+
+```{r, warning=FALSE}
+
+envo_df_edgelist_children <- envo_df_parents %>% dplyr::distinct(Id, children) %>% rename("to"="Id","from"="children") %>% dplyr::select(from,to)
+
+envo_df_vertices <- c(envo_df_edgelist_children$to,envo_df_edgelist_children$from) %>% as.tibble() %>% rename("name"="value") %>% distinct()
+
+envo_graph <- graph_from_data_frame(envo_df_edgelist_children,directed=TRUE,vertices = envo_df_vertices)
+
+
+summary(envo_graph)
+```
+
+
+1. How many nodes?
+```{r}
+vcount(envo_graph)
+```
+
+2. How many links and what they represent?
+```{r}
+ecount(envo_graph)
+```
+3. Are the links directed?
+```{r}
+igraph::is.directed(envo_graph)
+```
+
+the EnvO graph has DAG structure
+
+```{r}
+is.dag(envo_graph)
+```
+
+6. Is the network connected? If not what is the size of each component?
+```{r}
+is_connected(envo_graph)
+clusters(envo_graph)$csize # if there are multiple network components sometimes is useful to use onle the giant component. To extract the giant component you can use the decompose.graph function.
+
+clusters(envo_graph)$no
+
+V(envo_graph)$cluster <- clusters(envo_graph)$membership
+
+```
+
+There are 2 big subgraphs of EnvO.`r table(V(envo_graph)$cluster)`. For that reason I created 2 subgraphs.
+
+```{r}
+
+envo_graph_big <- induced_subgraph(envo_graph, V(envo_graph)$cluster==1)
+
+envo_graph_small <- induced_subgraph(envo_graph, V(envo_graph)$cluster==2)
+
+```
+
+
+
+the top node of the biggest cluster is BFO:0000002 which stands for *continuant*. The top node of the second cluster is BFO:0000003 which stands for *occurent*. 
+
+```{r}
+envo_graph_sortest_path <- shortest_paths(envo_graph_big,from = "BFO:0000002",mode = "all")
+
+envo_graph_big_distances <- as.data.frame(distances(envo_graph_big)) %>% rownames_to_column(var = "from") %>%  tidyr::pivot_longer(-from, names_to = "to", values_to = "distance") %>% filter(!(from==to))
+
+
+summary(envo_graph_big_distances$distance)
+
+```
+
+
+```{r}
+
+envo_graph_big_distances_BFO_0000002 <- envo_graph_big_distances %>% filter(from=="BFO:0000002")
+
+```
+
+## Centralities
+
+```{r}
+V(envo_graph_big)$degree <- degree(envo_graph_big)
+
+V(envo_graph_small)$degree <- degree(envo_graph_small)
+
+envo_graph_big_tidy <- envo_graph_big %>% as_tbl_graph()
+envo_graph_small_tidy <- envo_graph_small %>% as_tbl_graph()
+
+
+envo_graph_big_tidy_nodes <- envo_graph_big_tidy %>% activate(nodes) %>% as_tibble()
+
+envo_graph_small_tidy_nodes <- envo_graph_small_tidy %>% activate(nodes) %>% as_tibble()
+
+```
+
