@@ -1,5 +1,14 @@
 # PREGO data descriptives
 
+* how many abstracts?
+* how many taxa at a specific taxonomic level?
+* how many samples for MGnify?
+* how many samples from MG-RAST?
+* how many annotated genomes from JGI?
+* how many processes?
+* how many envinronments?
+* how many interactions (in total, taxon-process, taxon-environmets)?
+
 ## PubMed abstracts
 
 Pubmed tsv files contain 6 fields
