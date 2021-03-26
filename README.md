@@ -1,6 +1,5 @@
 # PREGO data descriptives
 
-* how many abstracts?
 * how many taxa at a specific taxonomic level?
 * how many samples for MGnify?
 * how many samples from MG-RAST?
@@ -19,9 +18,18 @@ PMID|DOI        Authors     Journal.volume:pages        year        title       
 
 How many lines-abstracts does pubmed have? 
 
+* how many abstracts?
+* how many unique abstracts
+* how many no-empty PMIDs
+
 Total ID’s that have DOI
 Total duplicated ids in pubmed files
 Missing, how many duplicated? How many unique
+
+### Organisms - Environments interactions
+
+### Organisms - Processes interactions
+
 
 ## Experiments
 
