@@ -14,6 +14,7 @@ colnames(mgnify_sample_entity_sources) <- c("sample_id","type","term_id")
 mgnify_taxon_sample <- read_delim("/data/databases/scripts/gathering_data/mgnify/taxon_sample_abundance.tsv", delim = "\t", col_names = F)
 colnames(mgnify_taxon_sample) <- c("ncbi_id","sample_id")
 
+
 ## load taxonomy
 
 ncbi_tax_rank <- read_delim("ncbi_tax_rank.tsv", delim = "\t", col_names = F)
