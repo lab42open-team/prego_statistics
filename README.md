@@ -10,21 +10,26 @@
 
 ## Text mining
 
+Text mining is performed on PUbMed abstracts with the PREGO dictionary.
+
 ### PubMed abstracts
 
-Pubmed tsv files contain 6 fields
+The `pubmed_statistics.awk` script summarises some info of the PubMed tsv files.
 
+```
+date ; gunzip -c /data/databases/pubmed/pubmed*.tsv.gz | ./pubmed_statistics.awk ; dat
+e
+```
+
+PubMed tsv files contain 6 fields. There are case that some of these are empty or even duplicated. The above script finds these inconcistencies and calculates the number of abstracts.
+
+Fields:
 PMID|DOI        Authors     Journal.volume:pages        year        title       Abstract
 
-How many lines-abstracts does pubmed have? 
-
+Questions:
 * how many abstracts?
 * how many unique abstracts
 * how many no-empty PMIDs
-
-Total ID’s that have DOI
-Total duplicated ids in pubmed files
-Missing, how many duplicated? How many unique
 
 ### Organisms - Environments interactions
 

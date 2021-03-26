@@ -1,17 +1,19 @@
 #! /usr/bin/gawk -f
 # how to run
-# gunzip -c /data/databases/pubmed/pubmed*.tsv.gz | ./pubmed_statistics.awk
+# ./textmining_statistics.awk /data/textmining/database_pairs.tsv
 BEGIN {
     FS="\t"
     # Field names
-    id=1; authors=2; journal=3 ; year=4 ;titles=5; abstract=6
+    type_1=1; id_1=2; type_2=3; id_2=4; z_score=5; score=6
 
     }
+## to do: create an array with  $taxa[$id_1]==$0 and then split the elements. Then for the different 
 
-{times[$1]++}
-END{print "Unique abstracts" "\t" length(times); for (i in times){sum+=times[i]}; print "Total abstracts" "\t" sum }
+($type_1 == -2){$taxa[$id_1]=$0};
+($type_1 == -2 && $type_2 == -27){$taxa_env[$id_2]++}
+($type_1 == -2 && $type_2 == -21){$taxa_proc[$id_2]++}
 
-#cd /data/databases/pubmed
-#ls -1 | awk '{sub(/\./," ")}1' | awk '{gsub(/_stats/,"",$1); print $2}' | sort | uniq -c
 
-#more pubmed_ids.tsv | gawk '!seen[$0]++' | wc -l 
+END{print "Unique taxa" "\t" length(taxa)  "\n" "Unique environments" "\t" length(taxa_env) "\n" "Unique processes" "\t" length(taxa_proc)}
+
+#for (i in taxa_env) {count_env[taxa_env[i]]++}; print "Total taxa_env" "\t" count_env }
