@@ -8,11 +8,12 @@ BEGIN {
 
     }
 ## to do: create an array with  $taxa[$id_1]==$0 and then split the elements. Then for the different 
+(NR==FNR && $type_1 == -2){
 
-($type_1 == -2){$taxa[$id_1]=$0};
-($type_1 == -2 && $type_2 == -27){$taxa_env[$id_2]++}
-($type_1 == -2 && $type_2 == -21){$taxa_proc[$id_2]++}
-
+    $taxa[$id_1]=$0 
+    if ($type_2 == -27){$taxa_env[$id_2]++}
+    else if ($type_2 == -21){$taxa_proc[$id_2]++}
+}
 
 END{print "Unique taxa" "\t" length(taxa)  "\n" "Unique environments" "\t" length(taxa_env) "\n" "Unique processes" "\t" length(taxa_proc)}
 
