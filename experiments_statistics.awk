@@ -11,18 +11,41 @@ BEGIN {
 (NR==FNR && $type_1 == -2){
 
     if ($source=="MGnify"){
-        $taxa["MGnify"][$id_1]=$0 
-        if ($type_2 == -27){$taxa_env[$id_2]++}
-        else if ($type_2 == -21){$taxa_proc[$id_2]++}
+        
+        taxa["MGnify"][$id_1]=$0
+
+        if ($type_2 == -27){
+            taxa_env["MGnify"][$id_2]++
+        }
+        else if ($type_2 == -21){
+            taxa_proc["MGnify"][$id_2]++
+        }
     }
 
     else if ($source=="MG-RAST"){
-        $taxa["MG-RAST"][$id_1]=$0 
-        if ($type_2 == -27){$taxa_env[$id_2]++}
-        else if ($type_2 == -21){$taxa_proc[$id_2]++}
+        
+        taxa["MG-RAST"][$id_1]=$0
+        
+        if ($type_2 == -27){
+            taxa_env["MG-RAST"][$id_2]++
+        }
+        
+        else if ($type_2 == -21){
+            taxa_proc["MG-RAST"][$id_2]++
+        }
     }
 }
 #print mgrast and mgnify
-END{print "Unique taxa" "\t" length(taxa["MGnify"])  "\n" "Unique environments" "\t" length(taxa_env) "\n" "Unique processes" "\t" length(taxa_proc)}
+END{ 
+
+    print "source" "\t" "Unique taxa" "\t" "Unique environments" "\t" "Unique processes";
+
+    for (i in taxa){
+
+    print i "\t" length(taxa[i]) "\t" length(taxa_env[i]) "\t" length(taxa_proc[i]) "\n"
+    
+    }
+
+}
 
 #for (i in taxa_env) {count_env[taxa_env[i]]++}; print "Total taxa_env" "\t" count_env }
