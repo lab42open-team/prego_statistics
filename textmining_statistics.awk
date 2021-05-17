@@ -8,16 +8,19 @@ BEGIN {
 
     }
 
+# load only organisms interactions (that is half the file)
 ($type_1 == -2){
 
     taxa[$id_1]=$0
 
+    # count the taxa - environments associations
     if ($type_2 == -27){
         
         taxa_env[$id_1" "$id_2]++;
         env[$id_2]++;
 
     }
+    # count the taxa - processes associations
     else if ($type_2 == -21){
 
         proc[$id_2]++;
