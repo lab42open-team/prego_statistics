@@ -12,26 +12,26 @@ BEGIN {
 
     if ($source=="MGnify"){
         
-        taxa["MGnify"][$id_1]=$0
+        taxa[$source][$id_1]=$0
 
         if ($type_2 == -27){
-            taxa_env["MGnify"][$id_2]++
+            taxa_env[$source][$id_2]++
         }
         else if ($type_2 == -21){
-            taxa_proc["MGnify"][$id_2]++
+            taxa_proc[$source][$id_2]++
         }
     }
 
     else if ($source=="MG-RAST"){
         
-        taxa["MG-RAST"][$id_1]=$0
+        taxa[$source][$id_1]=$0
         
         if ($type_2 == -27){
-            taxa_env["MG-RAST"][$id_2]++
+            taxa_env[$source][$id_2]++
         }
         
         else if ($type_2 == -21){
-            taxa_proc["MG-RAST"][$id_2]++
+            taxa_proc[$source][$id_2]++
         }
     }
 }
@@ -48,4 +48,3 @@ END{
 
 }
 
-#for (i in taxa_env) {count_env[taxa_env[i]]++}; print "Total taxa_env" "\t" count_env }
