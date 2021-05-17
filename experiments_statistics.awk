@@ -1,13 +1,15 @@
 #! /usr/bin/gawk -f
 # how to run
-# ./experiments_statistics.awk /data/experiments/database_pairs.tsv /data/databases/scripts/gathering_data/mgnify/ncbi_background.tsv
+# ./experiments_statistics.awk /data/experiments/database_pairs.tsv nodes.dmp
+
 BEGIN {
     FS="\t"
     # Field names
     type_1=1; id_1=2; type_2=3; id_2=4; source=5; evidence=6; score=7; explicit=8; url=9
 
     }
-## to do: create an array with  $taxa[$id_1]==$0 and then split the elements. Then for the different 
+# load half the file for organisms only. The NR==FNR is true only for the first file.
+
 (NR==FNR && $type_1 == -2){
 
     if ($source=="MGnify"){
@@ -35,14 +37,23 @@ BEGIN {
         }
     }
 }
-#print mgrast and mgnify
+{
+    rank[$1]=$5;
+}
+#print statistics for each source.
 END{ 
 
     print "source" "\t" "Unique taxa" "\t" "Unique environments" "\t" "Unique processes";
+    print length(rank) ;
 
     for (i in taxa){
 
-    print i "\t" length(taxa[i]) "\t" length(taxa_env[i]) "\t" length(taxa_proc[i]) "\n"
+    print i "\t" length(taxa[i]) "\t" length(taxa_env[i]) "\t" length(taxa_proc[i]) "\n";
+
+    for (j in taxa[i]){
+
+        taxonomyrank[taxa[i]]
+        }
     
     }
 
