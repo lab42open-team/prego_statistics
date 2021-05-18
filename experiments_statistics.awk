@@ -43,17 +43,24 @@ BEGIN {
 #print statistics for each source.
 END{ 
 
+
     print "source" "\t" "Unique taxa" "\t" "Unique environments" "\t" "Unique processes";
     print length(rank) ;
 
     for (i in taxa){
 
-    print i "\t" length(taxa[i]) "\t" length(taxa_env[i]) "\t" length(taxa_proc[i]) "\n";
+        print i "\t" length(taxa[i]) "\t" length(taxa_env[i]) "\t" length(taxa_proc[i]) "\n";
 
-    for (j in taxa[i]){
+        for (j in taxa[i]){
 
-        taxonomyrank[taxa[i]]
-        }
+             taxa_rank[rank[j]]++
+            }
+
+        for (r in taxa_rank){
+
+            print r "\t" taxa_rank[r]
+
+            }
     
     }
 

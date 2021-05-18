@@ -1,6 +1,6 @@
 #! /usr/bin/gawk -f
 # how to run
-# ./knowledge_statistics.awk /data/knowledge/database_pairs.tsv
+# ./knowledge_statistics.awk /data/knowledge/database_pairs.tsv nodes.dmp
 BEGIN {
     FS="\t"
     # Field names
@@ -35,6 +35,9 @@ BEGIN {
         }
     }
 }
+{
+    rank[$1]=$5;
+}
 #print mgrast and mgnify
 END{ 
 
@@ -42,9 +45,19 @@ END{
 
     for (i in taxa){
 
-    print i "\t" length(taxa[i]) "\t" length(taxa_env[i]) "\t" length(taxa_proc[i]) "\n"
+        print i "\t" length(taxa[i]) "\t" length(taxa_env[i]) "\t" length(taxa_proc[i]) "\n"
     
-    }
+        for (j in taxa[i]){
+
+             taxa_rank[rank[j]]++
+            }
+
+        for (r in taxa_rank){
+
+            print r "\t" taxa_rank[r]
+
+            }
+        }
 
 }
 

@@ -1,6 +1,6 @@
 #! /usr/bin/gawk -f
 # how to run
-# ./textmining_statistics.awk /data/textmining/database_pairs.tsv
+# ./textmining_statistics.awk /data/textmining/database_pairs.tsv nodes.dmp
 BEGIN {
     FS="\t"
     # Field names initialization for better readability
@@ -9,7 +9,7 @@ BEGIN {
     }
 
 # load only organisms interactions (that is half the file)
-($type_1 == -2){
+(NR ==FNR && $type_1 == -2){
 
     taxa[$id_1]=$0
 
@@ -27,6 +27,23 @@ BEGIN {
         taxa_proc[$id_1" "$id_2]++;
     }
 }
+{
 
-END{print "Unique taxa" "\t" length(taxa)  "\n" "Unique environments" "\t" length(env) "\n" "Unique processes" "\t" length(proc) "\n" "Taxa associations with Environments" "\t" length(taxa_env) "\n" "Taxa associations with processes" "\t" length(taxa_proc) "\n" "Total interactions" "\t" length(taxa_proc)+length(taxa_env) }
+    rank[$1]=$5;
+}
+END{print "source" "\t" "Unique taxa" "\t" "Unique environments" "\t" "Unique processes" "\t" "Taxa associations with Environments" "\t" "Taxa associations with processes" "\t" "Total interactions";
+
+    print  "text mining" "\t" length(taxa) "\t" length(env) "\t" length(proc) "\t" length(taxa_env) "\t" length(taxa_proc) "\t" length(taxa_proc)+length(taxa_env);
+
+
+    for (j in taxa){
+             
+        taxa_rank[rank[j]]++
+    }
+
+    for (r in taxa_rank){
+
+        print r "\t" taxa_rank[r]
+    }
+}
 
