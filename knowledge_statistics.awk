@@ -1,6 +1,22 @@
 #! /usr/bin/gawk -f
-# how to run
-# ./knowledge_statistics.awk /data/knowledge/database_pairs.tsv nodes.dmp
+
+########################################################################################
+# script name: knowledge_statistics.awk
+# path on oxygen: ?
+# developed by: Savvas Paragkamian
+# framework: PREGO - WP4
+########################################################################################
+# GOAL:
+# Aim of this script is to calculate the contents of the associations pairs derived from
+# different sources of JGI IMG and BioProject from the KNOWLEDGE channel
+# in terms of NCBI ids, ENVO ids, GO ids and their assotiations. Also the contents
+# taxominic rank
+########################################################################################
+#
+# usage: ./knowledge_statistics.awk /data/knowledge/database_pairs.tsv nodes.dmp
+#
+############################################################################################
+
 BEGIN {
     FS="\t"
     # Field names

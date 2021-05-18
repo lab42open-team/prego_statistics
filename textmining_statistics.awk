@@ -1,6 +1,20 @@
 #! /usr/bin/gawk -f
-# how to run
-# ./textmining_statistics.awk /data/textmining/database_pairs.tsv nodes.dmp
+
+########################################################################################
+# script name: textmining_statistics.awk
+# path on oxygen: ?
+# developed by: Savvas Paragkamian
+# framework: PREGO - WP4
+########################################################################################
+# GOAL:
+# Aim of this script is to calculate the contents of the textmining associations pairs
+# in terms of NCBI ids, ENVO ids, GO ids and their assotiations. Also the contents
+# taxominic rank
+########################################################################################
+#
+# usage: ./textmining_statistics.awk /data/textmining/database_pairs.tsv nodes.dmp
+#
+############################################################################################
 BEGIN {
     FS="\t"
     # Field names initialization for better readability

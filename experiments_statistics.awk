@@ -1,6 +1,21 @@
 #! /usr/bin/gawk -f
-# how to run
-# ./experiments_statistics.awk /data/experiments/database_pairs.tsv nodes.dmp
+
+########################################################################################
+# script name: experiments_statistics.awk
+# path on oxygen: ?
+# developed by: Savvas Paragkamian
+# framework: PREGO - WP4
+########################################################################################
+# GOAL:
+# Aim of this script is to calculate the contents of the associations pairs derived from
+# different sources of MGnify and MG-RAST
+# in terms of NCBI ids, ENVO ids, GO ids and their assotiations. Also the contents
+# taxominic rank
+########################################################################################
+#
+# usage:  ./experiments_statistics.awk /data/experiments/database_pairs.tsv nodes.dmp
+#
+############################################################################################
 
 BEGIN {
     FS="\t"
