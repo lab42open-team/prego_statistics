@@ -10,6 +10,7 @@
 # Aim of this script is to calculate the contents of the textmining associations pairs
 # in terms of NCBI ids, ENVO ids, GO ids and their assotiations. Also the contents
 # taxominic rank
+# NOTE: this script is for ALL associations regardless their score!!!
 ########################################################################################
 #
 # usage: ./textmining_statistics.awk /data/textmining/database_pairs.tsv nodes.dmp
@@ -21,8 +22,9 @@ BEGIN {
     type_1=1; id_1=2; type_2=3; id_2=4; z_score=5; score=6
 
     }
+# Load the first input file, the associations. And filter the taxa (-2) to process the taxa interactions with environments (-27) and processes (-21)
+# Load the data in associative arrays.
 
-# load only organisms interactions (that is half the file)
 (NR ==FNR && $type_1 == -2){
 
     taxa[$id_1]=$0
@@ -41,6 +43,7 @@ BEGIN {
         taxa_proc[$id_1" "$id_2]++;
     }
 }
+# Load the second file, NCBI taxonomy dump file with NCBI Ids and ranks.
 {
 
     rank[$1]=$5;

@@ -11,6 +11,7 @@
 # different sources of MGnify and MG-RAST
 # in terms of NCBI ids, ENVO ids, GO ids and their assotiations. Also the contents
 # taxominic rank
+# NOTE: this script is for ALL associations regardless their score!!!
 ########################################################################################
 #
 # usage:  ./experiments_statistics.awk /data/experiments/database_pairs.tsv nodes.dmp
@@ -24,6 +25,9 @@ BEGIN {
 
     }
 # load half the file for organisms only. The NR==FNR is true only for the first file.
+# Load the first input file, the associations. And filter the taxa (-2) to process the taxa interactions with environments (-27) and processes (-21)
+# there are 2 sources of Experiments: MG-RAST and MGnify.
+# Load the data in associative arrays.
 
 (NR==FNR && $type_1 == -2){
 
@@ -63,6 +67,7 @@ BEGIN {
         }
     }
 }
+# Load the second file, NCBI taxonomy dump file with NCBI Ids and ranks.
 {
     rank[$1]=$5;
 }

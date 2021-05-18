@@ -11,6 +11,7 @@
 # different sources of JGI IMG and BioProject from the KNOWLEDGE channel
 # in terms of NCBI ids, ENVO ids, GO ids and their assotiations. Also the contents
 # taxominic rank
+# NOTE: this script is for ALL associations regardless their score!!!
 ########################################################################################
 #
 # usage: ./knowledge_statistics.awk /data/knowledge/database_pairs.tsv nodes.dmp
@@ -19,10 +20,14 @@
 
 BEGIN {
     FS="\t"
-    # Field names
+    # Field names for readability
     type_1=1; id_1=2; type_2=3; id_2=4; source=5; evidence=6; score=7; explicit=8; url=9
 
     }
+# Load the first input file, the associations. And filter the taxa (-2) to process the taxa interactions with environments (-27) and processes (-21)
+# there are 2 sources of Knowledge: BioProject and JGI IMG.
+# Load the data in associative arrays.
+
 (NR==FNR && $type_1 == -2){
 
     if ($source=="BioProject"){
@@ -61,6 +66,7 @@ BEGIN {
         }
     }
 }
+# Load the second file, NCBI taxonomy dump file with NCBI Ids and ranks.
 {
     rank[$1]=$5;
 }
