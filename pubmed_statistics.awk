@@ -1,6 +1,18 @@
 #! /usr/bin/gawk -f
-# how to run
-# gunzip -c /data/databases/pubmed/pubmed*.tsv.gz | ./pubmed_statistics.awk
+########################################################################################
+# script name: pubmed_statistics.awk
+# path on oxygen: ?
+# developed by: Savvas Paragkamian
+# framework: PREGO - WP4
+########################################################################################
+# GOAL:
+# Aim of this script is to calculate the contents of PubMed that is downloaded on oxygen
+# and is used for textmining. Checks for duplicated Ids and empty fields.
+########################################################################################
+#
+# usage: gunzip -c /data/databases/pubmed/pubmed*.tsv.gz | ./pubmed_statistics.awk
+#
+############################################################################################
 BEGIN {
     FS="\t"
     # Field names
