@@ -22,10 +22,13 @@ BEGIN {
     FS="\t"
     # Field names initialization for better readability
     #type_1=1; id_1=2; type_2=3; id_2=4; z_score=5; score=6
+    #initiate an array with the desired NCBI ids to count only microbes.
+    microbe_taxa[2]=1;
+    microbe_taxa[2157]=1;
 
     }
 # load the database_groups.tsv from the dictionary and filter microbes only
-(ARGIND==1 && $1==-2 && ($4==2 || $4==2157)){
+(ARGIND==1 && $1==-2 && ($4 in microbe_taxa)){
 
     microbes[$2]=$4
 

@@ -24,6 +24,9 @@ BEGIN {
     FS="\t"
     # Field names
     #type_1=1; id_1=2; type_2=3; id_2=4; source=5; evidence=6; score=7; explicit=8; url=9
+    #initiate an array with the desired NCBI ids to count only microbes.
+    microbe_taxa[2]=1;
+    microbe_taxa[2157]=1;
 
     }
 # load half the file for organisms only. The NR==FNR is true only for the first file.
@@ -32,7 +35,7 @@ BEGIN {
 # Load the data in associative arrays.
 
 # load the database_groups.tsv from the dictionary and filter microbes only
-(ARGIND==1 && $1==-2 && ($4==2 || $4==2157)){
+(ARGIND==1 && $1==-2 && ($4 in microbe_taxa)){
 
     microbes[$2]=$4
 
