@@ -20,12 +20,19 @@ BEGIN {
     FS="\t"
     # Field names initialization for better readability
     type_1=1; id_1=2; type_2=3; id_2=4; z_score=5; score=6
+    microbe_taxa[2]=1;
+    microbe_taxa[2157]=1;
 
     }
 # Load the first input file, the associations. And filter the taxa (-2) to process the taxa interactions with environments (-27) and processes (-21)
 # Load the data in associative arrays.
 
-($type_1 == -2){
+(ARGIND==1 && $1==-2){
+
+    microbes[$2]=$4
+
+}
+(ARGIND>1 && $type_1 == -2 && ($2 in microbes)){
 
     taxa[$id_1]=$0
 
