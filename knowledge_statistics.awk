@@ -111,7 +111,6 @@ END{
 
             print e "\t" i "\t" taxa_env[i][e]
 
-            
             }
         
         if (isarray(taxa_proc[i])){

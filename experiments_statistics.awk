@@ -1,36 +1,39 @@
 #! /usr/bin/gawk -f
 
-########################################################################################
+###############################################################################
 # script name: experiments_statistics.awk
 # path on oxygen: ?
 # developed by: Savvas Paragkamian
 # framework: PREGO - WP4
-########################################################################################
+###############################################################################
 # GOAL:
-# Aim of this script is to calculate the contents of the associations pairs derived from
-# different sources of MGnify and MG-RAST
-# in terms of NCBI ids, ENVO ids, GO ids and their assotiations. Also the contents
-# taxominic rank
+# Aim of this script is to calculate the contents of the associations pairs 
+# derived from different sources of MGnify and MG-RAST
+# in terms of NCBI ids, ENVO ids, GO ids and their assotiations. 
+# Also the contents taxominic rank
 # NOTE: this script is for ALL associations regardless their score!!!
-########################################################################################
+###############################################################################
 #
 # usage:  ./experiments_statistics.awk \
 # /data/dictionary/database_groups.tsv /data/experiments/database_pairs.tsv \
 # nodes.dmp
 #
-############################################################################################
+###############################################################################
 
 BEGIN {
     FS="\t"
     # Field names
-    #type_1=1; id_1=2; type_2=3; id_2=4; source=5; evidence=6; score=7; explicit=8; url=9
+    #type_1=1; id_1=2; type_2=3; id_2=4; source=5; evidence=6; score=7; 
+    #explicit=8; url=9
     #initiate an array with the desired NCBI ids to count only microbes.
     microbe_taxa[2]=1;
     microbe_taxa[2157]=1;
 
     }
-# load half the file for organisms only. The NR==FNR is true only for the first file.
-# Load the first input file, the associations. And filter the taxa (-2) to process the taxa interactions with environments (-27) and processes (-21)
+# load half the file for organisms only. 
+# The NR==FNR is true only for the first file.
+# Load the first input file, the associations. And filter the taxa (-2) 
+# to process the taxa interactions with environments (-27) and processes (-21)
 # there are 2 sources of Experiments: MG-RAST and MGnify.
 # Load the data in associative arrays.
 
