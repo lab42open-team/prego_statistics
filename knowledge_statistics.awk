@@ -44,41 +44,20 @@ BEGIN {
 
     if ($2 in microbes) {
         
-        if ($5=="BioProject"){
+        if ($3 == -27){
+# these are arrays of arrays, one for each source of the variable $5 
+# e.g JGI IMG, Bioproject.
+            taxa_env[$5][$2" "$4]++;
+            env[$5][$4]++;
+            taxa[$5][$2]=$0;
 
-            if ($3 == -27){
-
-                taxa_env[$5][$2" "$4]++;
-                env[$5][$4]++;
-                taxa[$5][$2]=$0;
-
-            }
-            else if ($3 == -21){
-                
-                taxa_proc[$5][$2" "$4]++;
-                proc[$5][$4]++;
-                taxa[$5][$2]=$0;
-
-            }
         }
-
-        else if ($5=="JGI IMG"){
+        else if ($3 == -21){
             
+            taxa_proc[$5][$2" "$4]++;
+            proc[$5][$4]++;
+            taxa[$5][$2]=$0;
 
-            if ($3 == -27){
-
-                taxa_env[$5][$2" "$4]++;
-                taxa[$5][$2]=$0;
-                env[$5][$4]++;
-
-            }
-            else if ($3 == -21){
-                
-                taxa_proc[$5][$2" "$4]++;
-                proc[$5][$4]++;
-                taxa[$5][$2]=$0;
-
-            }
         }
     }
 }

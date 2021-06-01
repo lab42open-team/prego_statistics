@@ -28,6 +28,8 @@ BEGIN {
     #initiate an array with the desired NCBI ids to count only microbes.
     microbe_taxa[2]=1;
     microbe_taxa[2157]=1;
+    source_db["MGnify"]=1;
+    source_db["MG-RAST"]=1;
 
     }
 # load half the file for organisms only. 
@@ -47,41 +49,22 @@ BEGIN {
 
     if ($2 in microbes) {
         
-        if ($5=="MGnify"){
 
-            if ($3 == -27){
+# these are arrays of arrays, one for each source of the variable $5 
+# e.g MGnify, MG-RAST
+        if ($3 == -27){
 
-                taxa_env[$5][$2" "$4]++;
-                env[$5][$4]++;
-                taxa[$5][$2]=$0;
+            taxa_env[$5][$2" "$4]++;
+            env[$5][$4]++;
+            taxa[$5][$2]=$0;
 
-            }
-            else if ($3 == -21){
-                
-                taxa_proc[$5][$2" "$4]++;
-                proc[$5][$4]++;
-                taxa[$5][$2]=$0;
-
-            }
         }
-
-        else if ($5=="MG-RAST"){
+        else if ($3 == -21){
             
+            taxa_proc[$5][$2" "$4]++;
+            proc[$5][$4]++;
+            taxa[$5][$2]=$0;
 
-            if ($3 == -27){
-
-                taxa_env[$5][$2" "$4]++;
-                taxa[$5][$2]=$0;
-                env[$5][$4]++;
-
-            }
-            else if ($3 == -21){
-                
-                taxa_proc[$5][$2" "$4]++;
-                proc[$5][$4]++;
-                taxa[$5][$2]=$0;
-
-            }
         }
     }
 }
