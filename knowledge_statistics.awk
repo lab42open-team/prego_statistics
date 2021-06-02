@@ -39,8 +39,12 @@ BEGIN {
     microbes[$2]=$4
 
 }
+# Load the second file, NCBI taxonomy dump file with NCBI Ids and ranks.
+(ARGIND==2){
+    rank[$1]=$5;
+}
 
-(ARGIND==2 && $1 == -2){
+(ARGIND==3 && $1 == -2){
 
     if ($2 in microbes) {
         
@@ -60,10 +64,6 @@ BEGIN {
 
         }
     }
-}
-# Load the second file, NCBI taxonomy dump file with NCBI Ids and ranks.
-(ARGIND==3){
-    rank[$1]=$5;
 }
 END{ 
 
@@ -86,22 +86,22 @@ END{
 
             }
 
-        for (e in taxa_env[i]){
-
-            print e "\t" i "\t" taxa_env[i][e]
-
-            }
-        
-        if (isarray(taxa_proc[i])){
-
-            for (p in taxa_proc[i]){
-
-                print p "\t" i "\t" taxa_proc[i][p]
-
-                }
-
-            }
-
+#        for (e in taxa_env[i]){
+#
+#            print e "\t" i "\t" taxa_env[i][e]
+#
+#            }
+#        
+#        if (isarray(taxa_proc[i])){
+#
+#            for (p in taxa_proc[i]){
+#
+#                print p "\t" i "\t" taxa_proc[i][p]
+#
+#                }
+#
+#            }
+#
 
         for (r in taxa_rank){
 
