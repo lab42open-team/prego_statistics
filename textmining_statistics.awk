@@ -14,8 +14,8 @@
 ###############################################################################
 #
 # usage: ./textmining_statistics_microbes.awk \
-# /data/dictionary/database_groups.tsv /data/textmining/database_pairs.tsv \
-# nodes.dmp
+# /data/dictionary/database_groups.tsv nodes.dmp /data/textmining/database_pairs.tsv
+# 
 #
 ###############################################################################
 BEGIN {
@@ -27,17 +27,22 @@ BEGIN {
     microbe_taxa[2157]=1;
 
     }
+# Load the data in associative arrays.
 # load the database_groups.tsv from the dictionary and filter microbes only
 (ARGIND==1 && $1==-2 && ($4 in microbe_taxa)){
 
     microbes[$2]=$4
 
 }
-# Load the data in associative arrays.
-# Load the first input file, the associations.  
+# Load the second file, NCBI taxonomy dump file with NCBI Ids and ranks.
+(ARGIND==2){
+
+    rank[$1]=$5;
+}
+# Load the the associations.  
 # filter the taxa (-2) to process the taxa interactions with environments 
 # (-27) and processes (-21)
-(ARGIND==2 && $1==-2){
+(ARGIND==3 && $1==-2){
 
     if ($2 in microbes) {
 
@@ -59,11 +64,7 @@ BEGIN {
 
         }
     }
-# Load the second file, NCBI taxonomy dump file with NCBI Ids and ranks.
-(ARGIND==3){
-
-    rank[$1]=$5;
-}
+# print the result
 END{
 
     print "source" "\t" "Unique taxa" "\t" "Unique environments" \
@@ -80,7 +81,7 @@ END{
              
         taxa_rank[rank[j]]++
         taxonomy[microbes[j]]++
-        print j "\t" taxa[j]
+#        print j "\t" taxa[j]
     }
 
     for (r in taxa_rank){
