@@ -15,8 +15,8 @@
 ###############################################################################
 #
 # usage:  ./experiments_statistics.awk \
-# /data/dictionary/database_groups.tsv /data/experiments/database_pairs.tsv \
-# nodes.dmp
+# /data/dictionary/database_groups.tsv nodes.dmp /data/experiments/database_pairs.tsv
+#
 #
 ###############################################################################
 
@@ -28,8 +28,6 @@ BEGIN {
     #initiate an array with the desired NCBI ids to count only microbes.
     microbe_taxa[2]=1;
     microbe_taxa[2157]=1;
-    source_db["MGnify"]=1;
-    source_db["MG-RAST"]=1;
 
     }
 # load half the file for organisms only. 
@@ -45,7 +43,13 @@ BEGIN {
     microbes[$2]=$4
 
 }
-(ARGIND==2 && $1 == -2){
+# Load the second file, NCBI taxonomy dump file with NCBI Ids and ranks.
+(ARGIND==2){
+    
+    rank[$1]=$5;
+    
+}
+(ARGIND==3 && $1 == -2){
 
     if ($2 in microbes) {
         
@@ -67,12 +71,6 @@ BEGIN {
 
         }
     }
-}
-# Load the second file, NCBI taxonomy dump file with NCBI Ids and ranks.
-(ARGIND==3){
-    
-    rank[$1]=$5;
-    
 }
 #print statistics for each source.
 END{ 
@@ -96,17 +94,21 @@ END{
 
             }
 
-        for (e in taxa_env[i]){
-
-            print e "\t" i "\t" taxa_env[i][e]
-
-            }
-
-        for (p in taxa_proc[i]){
-
-            print p "\t" i "\t" taxa_proc[i][p]
-
-            }
+#        for (e in taxa_env[i]){
+#
+#            print e "\t" i "\t" taxa_env[i][e]
+#
+#            }
+#
+#        if (isarray(taxa_proc[i])){
+#
+#            for (p in taxa_proc[i]){
+#
+#                print p "\t" i "\t" taxa_proc[i][p]
+#
+#                }
+#
+#            }
 
         for (r in taxa_rank){
 
