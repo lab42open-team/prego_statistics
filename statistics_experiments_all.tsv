@@ -1,0 +1,42 @@
+source	Unique taxa	Unique environments	Unique processes	Taxa associations with Environments	Taxa associations with processes	Total interactions
+microbes	495483
+MGnify	3215	316	49	361069	24527	385596
+
+strain	5
+	14
+subclass	1
+genus	1049
+species	1664
+order	104
+clade	1
+subspecies	11
+phylum	32
+class	44
+family	285
+no rank	4
+suborder	1
+2	3036
+2157	179
+MG-RAST	7326	175	0	332426	0	332426
+
+strain	2547
+	36
+subclass	1
+genus	1049
+species	6176
+biotype	2
+order	104
+isolate	4
+clade	1
+subspecies	138
+varietas	1
+serogroup	11
+phylum	32
+class	44
+family	285
+serotype	1
+no rank	103
+suborder	1
+forma specialis	5
+2	10097
+2157	444
