@@ -1,5 +1,4 @@
 source	Unique taxa	Unique environments	Unique processes	Taxa associations with Environments	Taxa associations with processes	Total interactions
-microbes	495483
 MGnify	3215	316	49	361069	24527	385596
 
 strain	5
@@ -17,7 +16,7 @@ no rank	4
 suborder	1
 2	3036
 2157	179
-MG-RAST	7326	175	0	332426	0	332426
+MG-RAST	7326	175	2280	332426	14598708	14931134
 
 strain	2547
 	36

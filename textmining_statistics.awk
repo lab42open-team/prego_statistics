@@ -75,7 +75,7 @@ END{
               "\t" length(taxa_env) "\t" length(taxa_proc) "\t" \
               length(taxa_proc)+length(taxa_env);
     
-    print "microbes" "\t" length(microbes)
+#    print "microbes" "\t" length(microbes)
 
     for (j in taxa){
              

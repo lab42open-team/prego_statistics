@@ -71,7 +71,7 @@ END{
              "\t" "Unique processes" "\t" "Taxa associations with Environments"\
              "\t" "Taxa associations with processes" "\t" "Total interactions";
 
-    print "microbes" "\t" length(microbes)
+#    print "microbes" "\t" length(microbes)
     
     for (i in taxa){
 

@@ -63,7 +63,7 @@ BEGIN {
             taxa[$5][$2]=$0;
 
         }
-        else if ($3 == -21){
+        else if ($3 == -21 || $3 == -20){
             
             taxa_proc[$5][$2" "$4]++;
             proc[$5][$4]++;
@@ -79,7 +79,7 @@ END{
              "\t" "Unique processes" "\t" "Taxa associations with Environments"\
              "\t" "Taxa associations with processes" "\t" "Total interactions";
 
-    print "microbes" "\t" length(microbes)
+#    print "microbes" "\t" length(microbes)
     
     for (i in taxa){
 
