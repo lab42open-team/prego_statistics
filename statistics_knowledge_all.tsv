@@ -1,5 +1,4 @@
 source	Unique taxa	Unique environments	Unique processes	Taxa associations with Environments	Taxa associations with processes	Total interactions
-microbes	495483
 BioProject	7817	398	1495	33081	63557	96638
 
 	26
@@ -16,12 +15,12 @@ no rank	107
 forma specialis	6
 2	7529
 2157	288
-JGI IMG	7329	128	0	50413	0	50413
+JGI IMG	7437	128	1292	50413	59519	109932
 
 	38
-strain	5773
+strain	5778
 genus	62
-species	8959
+species	9062
 order	18
 biotype	3
 clade	3
@@ -37,4 +36,4 @@ serotype	6
 no rank	119
 forma specialis	6
 2	14137
-2157	1009
+2157	1117
