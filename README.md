@@ -8,6 +8,33 @@
 * how many envinronments?
 * how many interactions (in total, taxon-process, taxon-environmets)?
 
+## How to run the scripts
+
+### Total
+
+```
+cat /data/knowledge/database_pairs.tsv /data/knowledge/jgi_isolates_associations.tsv /data/textmining/database_pairs.tsv  /data/experiments/mgrast_wgs_associations.tsv /data/experiments/mgrast_markergene_associations.tsv /data/experiments/database_pairs.tsv /data/experiments/mgnify_markergene_associations.tsv | gawk -F"\t" '{gsub(/NCBI_ID:/,""); print}' | gawk -F"\t" '{gsub(/JGI\/IMG/,"JGI IMG"); print}' | ./total_statistics.awk /data/dictionary/database_groups.tsv nodes.dmp - > statistics_all.tsv
+```
+
+### Text mining
+
+```
+./textmining_statistics.awk /data/dictionary/database_groups.tsv nodes.dmp /data/textmining/database_pairs.tsv > statistics_textmining.tsv
+```
+
+### Experiments
+```
+cat /data/experiments/mgrast_wgs_associations.tsv /data/experiments/mgrast_markergene_associations.tsv /data/experiments/database_pairs.tsv /data/experiments/mgnify_markergene_associations.tsv | gawk -F"\t" '{gsub(/NCBI_ID:/,""); print}' | ./experiments_statistics.awk /data/dictionary/database_groups.tsv nodes.dmp - > statistics_experiments_all.tsv
+```
+
+### Knowledge
+
+
+```
+cat /data/knowledge/database_pairs.tsv /data/knowledge/jgi_isolates_associations.tsv | gawk -F"\t" '{gsub(/NCBI_ID:/,""); print}' | gawk -F"\t" '{gsub(/JGI\/IMG/,"JGI IMG"
+); print}' | ./knowledge_statistics.awk /data/dictionary/database_groups.tsv nodes.dmp - > statistics_knowledge_all.tsv
+```
+
 ## Text mining
 
 Text mining is performed on PUbMed abstracts with the PREGO dictionary.
@@ -31,12 +58,16 @@ Questions:
 * how many unique abstracts
 * how many no-empty PMIDs
 
+### How to run
+
 ### Organisms - Environments interactions
 
 ### Organisms - Processes interactions
 
 
 ## Experiments
+
+How to run.
 
 ### Mgnify data structure and statistics
 
