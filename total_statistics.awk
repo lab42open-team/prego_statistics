@@ -1,21 +1,23 @@
 #! /usr/bin/gawk -f
 
-########################################################################################
+###############################################################################
 # script name: total_statistics.awk
 # path on oxygen: ?
 # developed by: Savvas Paragkamian
 # framework: PREGO - WP4
-########################################################################################
+###############################################################################
 # GOAL:
-# Aim of this script is to calculate the contents of the associations pairs from all the
-# prediction channels, text mining, experiments and knowledge.
+# Aim of this script is to calculate the contents of the associations pairs 
+# from all the prediction channels, text mining, experiments and knowledge.
 # Theare  terms of NCBI ids, ENVO ids, GO ids as well as their assotiations.
 # NOTE: this script is for ALL associations regardless their score!!!
-########################################################################################
+###############################################################################
 #
-# usage:./total_statistics.awk /data/dictionary/database_groups.tsv nodes.dmp /data/textmining/database_pairs.tsv /data/experiments/database_pairs.tsv /data/knowledge/database_pairs.tsv
+# usage:./total_statistics.awk /data/dictionary/database_groups.tsv nodes.dmp \
+# /data/textmining/database_pairs.tsv /data/experiments/database_pairs.tsv \
+# /data/knowledge/database_pairs.tsv
 #
-############################################################################################
+###############################################################################
 BEGIN {
     FS="\t"
     # Field names initialization for better readability
@@ -50,7 +52,7 @@ BEGIN {
 
     }
     # count the taxa - processes associations
-    else if ($type_2 == -21){
+    else if ($type_2 == -21 || $type_2==-20){
 
         proc[$id_2]++;
         taxa_proc[$id_1" "$id_2]++;
