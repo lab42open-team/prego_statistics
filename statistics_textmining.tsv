@@ -1,32 +1,31 @@
 source	Unique taxa	Unique environments	Unique processes	Taxa associations with Environments	Taxa associations with processes	Total interactions
-text mining	28068	896	8177	238314	819385	1057699
-microbes	495483
+text mining	27937	908	8306	254488	856144	1110632
 subgenus	1
-	151
-strain	3661
+	149
+strain	3669
 subclass	3
-genus	3387
-species	18418
+genus	3384
+species	18265
 biotype	7
-order	227
+order	228
 isolate	9
 clade	63
-subspecies	403
+subspecies	399
 forma	1
 subphylum	2
 subfamily	1
 varietas	1
 tribe	2
 serogroup	105
-phylum	99
-family	521
-class	102
-species group	65
+phylum	102
+family	522
+class	104
+species group	67
 serotype	68
-no rank	737
+no rank	751
 suborder	7
 forma specialis	5
 pathogroup	4
 species subgroup	18
-2	26922
-2157	1146
+2	26777
+2157	1160
