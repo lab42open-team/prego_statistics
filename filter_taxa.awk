@@ -2,7 +2,7 @@
 # This script creates a tsv file with all the NCBI ids that are NOT microbes and
 # thus have to be moved to hidden file.
 # How to run
-# ./filter_taxa.awk /data/dictionary/database_groups.tsv > all_taxa_no_bacteria_archaea.tsv
+# ./filter_taxa.awk METdb_GENOMIC_REFERENCE_DATABASE_FOR_MARINE_SPECIES.csv /data/dictionary/database_groups.tsv > all_taxa_no_bacteria_archaea.tsv
 
 BEGIN {
     selected_microbe_high_level_taxa[2]=1;      # tax id 2 stands for Bacteria
