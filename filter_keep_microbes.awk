@@ -41,6 +41,10 @@ BEGIN {
     selected_microbe_high_level_taxa[446134]=1;   # tax id 446134 stands for class Stylonematophyceae
 
     ## From Chloroplastida / Viridiplantae
+    selected_microbe_high_level_taxa[3166]=1;   # tax id 3166 stands for class Chloropphyceae
+    selected_microbe_high_level_taxa[2201463]=1;   # tax id 2201463 stands for class Palmophyllophyceae, synonym of Prasinophyceae
+    selected_microbe_high_level_taxa[3166]=1;   # tax id 3166 stands for class Chloropphyceae
+
 
 
 
