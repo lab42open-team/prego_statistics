@@ -5,8 +5,15 @@
 # ./filter_keep_microbes.awk METdb_GENOMIC_REFERENCE_DATABASE_FOR_MARINE_SPECIES.csv /data/dictionary/database_groups.tsv > prego_bacteria_archaea_METdb.tsv
 
 BEGIN {
+
+    ## Two conditional field separators. CAREFUL! 
+    FS="[\t,]"
+    
+    # Select organisms manually
     selected_microbe_high_level_taxa[2]=1;      # tax id 2 stands for Bacteria
     selected_microbe_high_level_taxa[2157]=1;   # tax id 2157 stands for Archea
+
+    ## Microbial - Unicellular Eukaryotes
 
     ## From supergroup Excavata, clade Discoba
     selected_microbe_high_level_taxa[33682]=1;   # tax id 2157 stands for phylum Euglenozoa
@@ -25,12 +32,17 @@ BEGIN {
 
     ## From supergroup Archaeplastida
 
-    selected_microbe_high_level_taxa[38254]=1;   # tax id 38254 stands for clade Glaucocystophyceae
-#    selected_microbe_high_level_taxa[2611341]=1;   # tax id 2611341 stands for clade Metamonada
+    selected_microbe_high_level_taxa[38254]=1;   # tax id 38254 stands for class Glaucocystophyceae
+    
+    ### Rhodophycea, red algae
+    selected_microbe_high_level_taxa[265318]=1;   # tax id 265318 stands for order Cyanidiales
+    selected_microbe_high_level_taxa[2798]=1;   # tax id 2798 stands for order Porphyridiales
+    selected_microbe_high_level_taxa[661027]=1;   # tax id 661027 stands for class Rhodellophyceae
+    selected_microbe_high_level_taxa[446134]=1;   # tax id 446134 stands for class Stylonematophyceae
+
+    ## From Chloroplastida / Viridiplantae
 
 
-    #microbial eukayrotes to be added
-    FS="[\t,]"
 
 }
 # Load the METdb A GENOMIC REFERENCE DATABASE FOR MARINE SPECIES data in associative array.
