@@ -14,20 +14,24 @@ BEGIN {
 
     ## Microbial - Unicellular Eukaryotes
 
-    ## From supergroup Excavata, clade Discoba
-    selected_microbe_high_level_taxa[33682]=1;   # tax id 2157 stands for phylum Euglenozoa
-    selected_microbe_high_level_taxa[5752]=1;   # tax id 5752 stands for phylum Heterolobosea
-    selected_microbe_high_level_taxa[556282]=1;   # tax id 556282 stands for order Jakobida
-    selected_microbe_high_level_taxa[2711297]=1;   # tax id 2711297 stands for order Tsukubamonadida
-    selected_microbe_high_level_taxa[2711297]=1;   # tax id 2711297 stands for order Tsukubamonadida
-
     ## From supergroup Excavata
+
+    selected_microbe_high_level_taxa[5719]=1;   # tax id 5719 stands for phylum Parabasalia
+    selected_microbe_high_level_taxa[5738]=1;   # tax id 5738 stands for order Diplomonadida
+    selected_microbe_high_level_taxa[66288]=1;   # tax id 66288 stands for order Oxymonadida
+    selected_microbe_high_level_taxa[193075]=1;   # tax id 193075 stands for family Retortamonadidae
     selected_microbe_high_level_taxa[2611341]=1;   # tax id 2611341 stands for clade Metamonada
     selected_microbe_high_level_taxa[207245]=1;   # tax id 207245 stands for plylum Fornicata
     selected_microbe_high_level_taxa[136087]=1;   # tax id 136087 stands for family Malawimonadidae
     selected_microbe_high_level_taxa[85705]=1;   # tax id 85705 stands for family Ancyromonadidae
-    selected_microbe_high_level_taxa[1291202]=1;   # tax id 1291202 stands for genus Nutomonas
     selected_microbe_high_level_taxa[1294546]=1;   # tax id 1294546 stands for family Planomonadidae
+
+
+    ### From supergroup Excavata, clade Discoba
+    selected_microbe_high_level_taxa[33682]=1;   # tax id 2157 stands for phylum Euglenozoa
+    selected_microbe_high_level_taxa[5752]=1;   # tax id 5752 stands for phylum Heterolobosea
+    selected_microbe_high_level_taxa[556282]=1;   # tax id 556282 stands for order Jakobida
+    selected_microbe_high_level_taxa[2711297]=1;   # tax id 2711297 stands for order Tsukubamonadida
 
     ## From supergroup Archaeplastida
 
@@ -40,6 +44,57 @@ BEGIN {
     selected_microbe_high_level_taxa[446134]=1;   # tax id 446134 stands for class Stylonematophyceae
 
     ## From Chloroplastida / Viridiplantae
+    selected_microbe_high_level_taxa[3166]=1;   # tax id 3166 stands for class Chloropphyceae
+    selected_microbe_high_level_taxa[2201463]=1;   # tax id 2201463 stands for class Palmophyllophyceae, synonym of Prasinophyceae
+    selected_microbe_high_level_taxa[3166]=1;   # tax id 3166 stands for class Chloropphyceae
+    selected_microbe_high_level_taxa[3166]=1;   # tax id 3166 stands for class Chloropphyceae
+
+    ## From Chromalveolata
+
+    ### Alveolata
+    
+    selected_microbe_high_level_taxa[2864]=1;   # tax id 2864 stands for class Dinophyceae
+    selected_microbe_high_level_taxa[5794]=1;   # tax id 5794 stands for class Apicomplexa
+    selected_microbe_high_level_taxa[5878]=1;   # tax id 5878 stands for phylum Ciliophora
+    selected_microbe_high_level_taxa[]=1;   # tax id 5878 stands for phylum Ciliophora
+
+    ### Stramenopiles
+ 
+    selected_microbe_high_level_taxa[238765]=1;   # tax id 238765 stands for class Actinophryidae
+    selected_microbe_high_level_taxa[33849]=1;   # tax id 33849 stands for class Bacillariophyceae
+    selected_microbe_high_level_taxa[35131]=1;   # tax id 35131 stands for class Labyrinthulomycetes
+    selected_microbe_high_level_taxa[33651]=1;   # tax id 33651 stands for order Bicosoecida
+
+    ### Chromobionta
+    selected_microbe_high_level_taxa[2833]=1;   # tax id 2833 stands for class Xanthophyceae
+    selected_microbe_high_level_taxa[38410]=1;   # tax id 38410 stands for class Raphidophyceae
+    selected_microbe_high_level_taxa[157124]=1;   # tax id 157124 stands for class Pinguiophyceae
+    selected_microbe_high_level_taxa[33849]=1;   # tax id 33849 stands for class Bacillariophyceae
+    selected_microbe_high_level_taxa[589449]=1;   # tax id 589449 stands for class Mediophyceae
+    selected_microbe_high_level_taxa[33836]=1;   # tax id 33836 stands for class Coscinodiscophyceae
+    selected_microbe_high_level_taxa[91989]=1;   # tax id 91989 stands for class Bolidophyceae
+    selected_microbe_high_level_taxa[35675]=1;   # tax id 35675 stands for class Pelagophyceae
+    selected_microbe_high_level_taxa[2825]=1;   # tax id 2825 stands for class Chrysophyceae
+    selected_microbe_high_level_taxa[33859]=1;   # tax id 33859 stands for class Synurophyceae
+    selected_microbe_high_level_taxa[557229]=1;   # tax id 557229 stands for class Synchromophyceae
+    selected_microbe_high_level_taxa[2825]=1;   # tax id 2825 stands for class Chrysophyceae
+    selected_microbe_high_level_taxa[39119]=1;   # tax id 39119 stands for class Dictyochophyceae
+
+    ### Haptophyta
+    selected_microbe_high_level_taxa[2830]=1;   # tax id 2830 stands for class Haptophyta
+
+    ## Unikonts
+
+    ### Opistrhokonta
+
+    ### Amoebozoa
+
+    ## Cryptobionta
+
+    ## Rhizaria
+
+    ## Discicristates
+
 
 }
 # Load the METdb A GENOMIC REFERENCE DATABASE FOR MARINE SPECIES data in associative array.
