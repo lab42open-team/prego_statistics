@@ -1,8 +1,10 @@
 #! /usr/bin/gawk -f
-# This script creates a tsv file with all the NCBI ids that are NOT microbes and
-# thus have to be moved to hidden file.
+# This script creates a tsv file with all the NCBI ids that are multicellular taxa and
+# thus have to be hidden from the PREGO interface.
+# This is the reverse script of the filter_multicellular_ncbi.awk. 
+# The only difference between them is the negation in the line 139.
 # How to run
-# ./filter_keep_microbes.awk METdb_GENOMIC_REFERENCE_DATABASE_FOR_MARINE_SPECIES.csv /data/dictionary/database_groups.tsv > prego_bacteria_archaea_METdb.tsv
+# ./filter_unicellular_ncbi.awk /data/dictionary/METdb_GENOMIC_REFERENCE_DATABASE_FOR_MARINE_SPECIES.csv /data/dictionary/database_groups.tsv > prego_unicellular_ncbi.tsv
 
 BEGIN {
 
@@ -58,7 +60,6 @@ BEGIN {
     selected_microbe_high_level_taxa[2864]=1;   # tax id 2864 stands for class Dinophyceae
     selected_microbe_high_level_taxa[5794]=1;   # tax id 5794 stands for class Apicomplexa
     selected_microbe_high_level_taxa[5878]=1;   # tax id 5878 stands for phylum Ciliophora
-    selected_microbe_high_level_taxa[]=1;   # tax id 5878 stands for phylum Ciliophora
 
     ### Stramenopiles
  
