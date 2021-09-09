@@ -9,10 +9,12 @@ BEGIN {
     FS="[\t,]"
     
     # Select organisms manually
+
+    ## Bacteria and Archaea
     selected_microbe_high_level_taxa[2]=1;      # tax id 2 stands for Bacteria
     selected_microbe_high_level_taxa[2157]=1;   # tax id 2157 stands for Archea
 
-    ## Microbial - Unicellular Eukaryotes
+    ## Unicellular Eukaryotes
 
     ## From supergroup Excavata
 
@@ -27,9 +29,9 @@ BEGIN {
     selected_microbe_high_level_taxa[1294546]=1;   # tax id 1294546 stands for family Planomonadidae
 
 
-    ### From supergroup Excavata, clade Discoba
+    ### From supergroup Excavata, clade Discoba (Discristates)
     selected_microbe_high_level_taxa[33682]=1;   # tax id 2157 stands for phylum Euglenozoa
-    selected_microbe_high_level_taxa[5752]=1;   # tax id 5752 stands for phylum Heterolobosea
+    selected_microbe_high_level_taxa[5752]=1;   # tax id 5752 stands for phylum Heterolobosea (includes Percolomonadidae)
     selected_microbe_high_level_taxa[556282]=1;   # tax id 556282 stands for order Jakobida
     selected_microbe_high_level_taxa[2711297]=1;   # tax id 2711297 stands for order Tsukubamonadida
 
@@ -87,14 +89,26 @@ BEGIN {
 
     ### Opistrhokonta
 
+    selected_microbe_high_level_taxa[127916]=1;   # tax id 127916 stands for class Ichthyosporea (Mesomycetozoa)
+    selected_microbe_high_level_taxa[6029]=1;   # tax id 6029 stands for class Microsporidia (unicellular Fungi)
+    selected_microbe_high_level_taxa[4890]=1;   # tax id 4890 stands for phylum Ascomycota (they contain some multicellular)
+    selected_microbe_high_level_taxa[28009]=1;   # tax id 28009 stands for class Choanoflagellata
+
     ### Amoebozoa
+    
+    selected_microbe_high_level_taxa[555369]=1;   # tax id 555369 stands for phylum Tubulinea (Lobosea)
+    selected_microbe_high_level_taxa[555406]=1;   # tax id 555406 stands for clade Archamoebae
+    selected_microbe_high_level_taxa[142796]=1;   # tax id 142796 stands for class Mycetozoa (Eumycetozoa, they contain some multicellular)
 
     ## Cryptobionta
 
+    selected_microbe_high_level_taxa[3027]=1;   # tax id 3027 stands for class Cryptophyceae
+    selected_microbe_high_level_taxa[339960]=1;   # tax id 339960 stands for order Kathablepharidacea
+    selected_microbe_high_level_taxa[419944]=1;   # tax id 419944 stands for phylum Picozoa
+
     ## Rhizaria
-
-    ## Discicristates
-
+    
+    selected_microbe_high_level_taxa[543769]=1;   # tax id 543769 stands for clade Rhizaria
 
 }
 # Load the METdb A GENOMIC REFERENCE DATABASE FOR MARINE SPECIES data in associative array.
