@@ -37,7 +37,7 @@ BEGIN {
     microbes[$2]=$4
 
 }
-# Load the second file, NCBI taxonomy dump file with NCBI Ids and ranks.
+# Load the third file, NCBI taxonomy dump file with NCBI Ids and ranks.
 (ARGIND==3){
 
     rank[$1]=$5;

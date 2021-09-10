@@ -13,7 +13,7 @@
 # NOTE: this script is for ALL associations regardless their score!!!
 ###############################################################################
 #
-# usage:./total_statistics.awk /data/dictionary/database_groups.tsv nodes.dmp \
+# usage:./total_statistics.awk /data/dictionary/prego_unicellular_ncbi.tsv /data/dictionary/database_groups.tsv nodes.dmp \
 # /data/textmining/database_pairs.tsv /data/experiments/database_pairs.tsv \
 # /data/knowledge/database_pairs.tsv
 #
