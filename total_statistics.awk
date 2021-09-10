@@ -22,25 +22,30 @@ BEGIN {
     FS="\t"
     # Field names initialization for better readability
     type_1=1; id_1=2; type_2=3; id_2=4; z_score=5; score=6
-    microbe_taxa[2]=1;
-    microbe_taxa[2157]=1;
+
 
     }
 # Load the data in associative arrays.
 
+(ARGIND==1) {
+
+    #initiate an array with the desired NCBI ids to count only microbes.
+    unicellular_taxa[$2]=1
+
+}
 # load the database_groups.tsv from the dictionary and filter microbes only
-(ARGIND==1 && $1==-2 && ($4 in microbe_taxa)){
+(ARGIND==2 && $1==-2 && ($4 in unicellular_taxa)){
 
     microbes[$2]=$4
 
 }
-# Load the second file, NCBI taxonomy dump file with NCBI Ids and ranks.
-(ARGIND==2){
+# Load the third file, NCBI taxonomy dump file with NCBI Ids and ranks.
+(ARGIND==3){
 
     rank[$1]=$5;
 }
 #Load all the database pairs files from all sources and channels of PREGO
-(ARGIND>2 && $type_1 == -2 && ($2 in microbes)){
+(ARGIND>3 && $type_1 == -2 && ($2 in microbes)){
 
     taxa[$id_1]=$0
 
@@ -76,9 +81,9 @@ END{
         print r "\t" taxa_rank[r]
     }
 
-    for (m in taxonomy){
-
-        print m "\t" taxonomy[m]
-    }
+#    for (m in taxonomy){
+#
+#        print m "\t" taxonomy[m]
+#    }
 }
 

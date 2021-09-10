@@ -13,7 +13,7 @@
 # NOTE: this script is for ALL associations regardless their score!!!
 ###############################################################################
 #
-# usage: ./textmining_statistics_microbes.awk \
+# usage: ./textmining_statistics.awk /data/dictionary/prego_unicellular_ncbi.tsv \
 # /data/dictionary/database_groups.tsv nodes.dmp /data/textmining/database_pairs.tsv
 # 
 #
@@ -22,27 +22,30 @@ BEGIN {
     FS="\t"
     # Field names initialization for better readability
     #type_1=1; id_1=2; type_2=3; id_2=4; z_score=5; score=6
-    #initiate an array with the desired NCBI ids to count only microbes.
-    microbe_taxa[2]=1;
-    microbe_taxa[2157]=1;
 
     }
 # Load the data in associative arrays.
+(ARGIND==1) {
+
+    #initiate an array with the desired NCBI ids to count only microbes.
+    unicellular_taxa[$2]=1
+
+}
 # load the database_groups.tsv from the dictionary and filter microbes only
-(ARGIND==1 && $1==-2 && ($4 in microbe_taxa)){
+(ARGIND==2 && $1==-2 && ($4 in unicellular_taxa)){
 
     microbes[$2]=$4
 
 }
 # Load the second file, NCBI taxonomy dump file with NCBI Ids and ranks.
-(ARGIND==2){
+(ARGIND==3){
 
     rank[$1]=$5;
 }
 # Load the the associations.  
 # filter the taxa (-2) to process the taxa interactions with environments 
 # (-27) and processes (-21)
-(ARGIND==3 && $1==-2){
+(ARGIND==4 && $1==-2){
 
     if ($2 in microbes) {
 
@@ -89,9 +92,9 @@ END{
         print r "\t" taxa_rank[r]
     }
 
-    for (m in taxonomy){
-
-        print m "\t" taxonomy[m]
-    }
+#    for (m in taxonomy){
+#
+#        print m "\t" taxonomy[m]
+#    }
 }
 
