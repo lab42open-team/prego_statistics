@@ -5,6 +5,9 @@
 # and Processes
 
 import sys
+import csv
+
+
 
 # Load the unicellular taxa in dictionary
 unicellular_taxa = {}
@@ -31,8 +34,10 @@ with open("nodes.dmp") as ranks:
 
 textmining_pairs = []
 
+channel = ["textmining", "experiments", "knowledge"]
+pairs_file = "/data/" + str(channel[0]) + "/database_pairs.tsv"
 #with open("/data/textmining/database_pairs.tsv") as textmining_file:
-with open("test_pairs.tsv") as textmining_file:
+with open(pairs_file) as textmining_file:
 
     for line in textmining_file:
         line = line.rstrip("\n").split("\t")
@@ -66,11 +71,22 @@ for line in textmining_pairs:
 
             textmining['-21'][line[1]]=1
 
-for k in textmining:
 
-    for j in textmining[k]:
+with open('output.tsv','wt') as out_file:
+    tsv_writer = csv.writer(out_file, delimiter='\t')
+    
+    for k in textmining:
+    
+        for j in textmining[k]:
+    
+            if j in rank.keys():
 
-        print(k,j,textmining[k][j], rank[j])
+                tsv_writer.writerow([j,k,channel[0],textmining[k][j], rank[j]])
+
+            else:
+
+                tsv_writer.writerow([j,k,channel[0],textmining[k][j], "NA"])
+
 
 
 
