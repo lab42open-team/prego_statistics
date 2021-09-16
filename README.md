@@ -1,4 +1,6 @@
-# PREGO data descriptives
+# PREGO contents
+
+This repo contains scripts that facilitate the anwsers to the following questions:
 
 * how many taxa at a specific taxonomic level?
 * how many samples for MGnify?
@@ -6,7 +8,7 @@
 * how many annotated genomes from JGI?
 * how many processes?
 * how many envinronments?
-* how many interactions (in total, taxon-process, taxon-environmets)?
+* how many associations (in total, taxon-process, taxon-environmets)?
 
 ## How to run the scripts
 
