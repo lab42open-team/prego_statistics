@@ -1,35 +1,28 @@
 #! /usr/bin/gawk -f
 
 ###############################################################################
-# script name: experiments_statistics.awk
+# script name: entities_statistics.awk
 # path on oxygen: ?
 # developed by: Savvas Paragkamian
 # framework: PREGO - WP4
 ###############################################################################
 # GOAL:
-# Aim of this script is to calculate the contents of the associations pairs 
-# derived from different sources of MGnify and MG-RAST
-# in terms of NCBI ids, ENVO ids, GO ids and their assotiations. 
+# Aim of this script is to calculate the entities and their associations across
+# channels and files. 
 # Also the contents taxominic rank
 # NOTE: this script is for ALL associations regardless their score!!!
 ###############################################################################
 #
-# usage:  ./experiments_statistics.awk /data/dictionary/prego_unicellular_ncbi.tsv \
-# /data/dictionary/database_groups.tsv nodes.dmp /data/experiments/database_pairs.tsv
-#
+# usage:  ./entities_statistics.awk /data/dictionary/prego_unicellular_ncbi.tsv \
+# nodes.dmp /data/experiments/database_pairs.tsv
 #
 ###############################################################################
 
-# Load the first input file, the associations. And filter the taxa (-2) 
-# to process the taxa interactions with environments (-27) and processes (-21)
-# there are 2 sources of Experiments: MG-RAST and MGnify.
-# Load the data in associative arrays.
 
-# load the database_groups.tsv from the dictionary and filter microbes only
 BEGIN {
     FS="\t"
     # Field names initialization for better readability
-    #type_1=1; id_1=2; type_2=3; id_2=4; z_score=5; score=6
+    type_1=1; id_1=2; type_2=3; id_2=4; z_score=5; score=6
 
     }
 # Load the data in associative arrays.
@@ -39,89 +32,67 @@ BEGIN {
     unicellular_taxa[$2]=1
 
 }
-# load the database_groups.tsv from the dictionary and filter microbes only
-(ARGIND==2 && $1==-2 && ($4 in unicellular_taxa)){
-
-    microbes[$2]=$4
-
-}
 # Load the third file, NCBI taxonomy dump file with NCBI Ids and ranks.
-(ARGIND==3){
+(ARGIND==2){
     
     rank[$1]=$5;
     
 }
-(ARGIND==4 && $1 == -2){
+(ARGIND>2){
 
-    if ($2 in microbes) {
-        
+    file = FILENAME
+    # remove the NCBI_ID prefix from files
+    gsub(/NCBI_ID:/, "", $0);
 
-# these are arrays of arrays, one for each source of the variable $5 
-# e.g MGnify, MG-RAST
-        if ($3 == -27){
+    if (($id_1 in unicellular_taxa) || ($id_2 in unicellular_taxa)){
 
-            taxa_env[$5][$2" "$4]++;
-            env[$5][$4]++;
-            taxa[$5][$2]=$0;
-
+        if ($1 == -2){
+            entities["all"]["all"][$type_1][rank[$2]][$id_1]=1
         }
-        else if ($3 == -21 || $3 == -20){
-            
-            taxa_proc[$5][$2" "$4]++;
-            proc[$5][$4]++;
-            taxa[$5][$2]=$0;
+        else{
+            entities["all"]["all"][$type_1]["no rank"][$id_1]=1
+        }
 
+        if (file ~ /textmining/) {
+    
+            if ($1 == -2){
+    
+               entities[file]["textmining"][$type_1][rank[$2]][$2]=1
+            }
+            else  {
+            
+                entities[file]["textmining"][$type_1]["no rank"][$id_1]=1
+            }
+        }
+        else {
+            if ($1 == -2){
+    
+                entities[file][$5][$type_1][rank[$id_1]][$id_1]=1
+            }
+            else  {
+                entities[file][$5][$type_1]["no rank"][$id_1]=1
+            }
         }
     }
 }
 #print statistics for each source.
 END{ 
 
-    print "source" "\t" "Unique taxa" "\t" "Unique environments" \
-             "\t" "Unique processes" "\t" "Taxa associations with Environments"\
-             "\t" "Taxa associations with processes" "\t" "Total interactions";
+    print "file" FS "channel" FS "type" FS "taxonomy" FS "Unique entities"
 
-#    print "microbes" "\t" length(microbes)
-    
-    for (i in taxa){
+    for (file in entities){
 
-        print i "\t" length(taxa[i]) "\t" length(env[i]) "\t" length(proc[i])\
-                 "\t" length(taxa_env[i]) "\t" length(taxa_proc[i]) "\t" \
-                 length(taxa_proc[i])+length(taxa_env[i]) "\n";
+        for (channel in entities[file]){
 
-        for (j in taxa[i]){
+            for (type in entities[file][channel]){
 
-             taxa_rank[rank[j]]++
-             taxonomy[microbes[j]]++
+                for (taxonomy in entities[file][channel][type]){
 
+                    print file FS channel FS type FS taxonomy FS length( entities[file][channel][type][taxonomy])
+
+                }
             }
-
-#        for (e in taxa_env[i]){
-#
-#            print e "\t" i "\t" taxa_env[i][e]
-#
-#            }
-#
-#        if (isarray(taxa_proc[i])){
-#
-#            for (p in taxa_proc[i]){
-#
-#                print p "\t" i "\t" taxa_proc[i][p]
-#
-#                }
-#
-#            }
-
-        for (r in taxa_rank){
-
-            print r "\t" taxa_rank[r]
-
-            }
-#        for (m in taxonomy){
-#
-#            print m "\t" taxonomy[m]
-#        }
-    
+        }
     }
 }
 
