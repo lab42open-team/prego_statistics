@@ -10,38 +10,16 @@ This repo contains scripts that facilitate the anwsers to the following question
 * how many envinronments?
 * how many associations (in total, taxon-process, taxon-environmets)?
 
-## How to run the scripts
+There are 4 components in this repo:
 
-### Total
-
-```
-cat /data/knowledge/database_pairs.tsv /data/knowledge/jgi_isolates_associations.tsv /data/textmining/database_pairs.tsv  /data/experiments/mgrast_wgs_associations.tsv /data/experiments/mgrast_markergene_associations.tsv /data/experiments/database_pairs.tsv /data/experiments/mgnify_markergene_associations.tsv | gawk -F"\t" '{gsub(/NCBI_ID:/,""); print}' | gawk -F"\t" '{gsub(/JGI\/IMG/,"JGI IMG"); print}' | ./total_statistics.awk /data/dictionary/database_groups.tsv nodes.dmp - > statistics_all.tsv
-```
-
-### Text mining
-
-```
-./textmining_statistics.awk /data/dictionary/database_groups.tsv nodes.dmp /data/textmining/database_pairs.tsv > statistics_textmining.tsv
-```
-
-### Experiments
-```
-cat /data/experiments/mgrast_wgs_associations.tsv /data/experiments/mgrast_markergene_associations.tsv /data/experiments/database_pairs.tsv /data/experiments/mgnify_markergene_associations.tsv | gawk -F"\t" '{gsub(/NCBI_ID:/,""); print}' | ./experiments_statistics.awk /data/dictionary/database_groups.tsv nodes.dmp - > statistics_experiments_all.tsv
-```
-
-### Knowledge
+1. pubmed statistics
+2. unicellular organism selection
+3. entities statistics
+4. association statistics
+5. visualization and other statistics
 
 
-```
-cat /data/knowledge/database_pairs.tsv /data/knowledge/jgi_isolates_associations.tsv | gawk -F"\t" '{gsub(/NCBI_ID:/,""); print}' | gawk -F"\t" '{gsub(/JGI\/IMG/,"JGI IMG"
-); print}' | ./knowledge_statistics.awk /data/dictionary/database_groups.tsv nodes.dmp - > statistics_knowledge_all.tsv
-```
-
-## Text mining
-
-Text mining is performed on PUbMed abstracts with the PREGO dictionary.
-
-### PubMed abstracts
+## PubMed abstracts
 
 The `pubmed_statistics.awk` script summarises some info of the PubMed tsv files.
 
@@ -60,16 +38,22 @@ Questions:
 * how many unique abstracts
 * how many no-empty PMIDs
 
-### How to run
+## Selection of unicellular organisms
+
+A list of higher level taxa
+
+Find which taxa have information in all sources of PREGO
+
+## Entities statistics
+
+Summarize the different entities that PREGO has associations between them
+
+## Associations statistics
 
 ### Organisms - Environments interactions
 
 ### Organisms - Processes interactions
 
-
-## Experiments
-
-How to run.
 
 ### Mgnify data structure and statistics
 
