@@ -13,16 +13,16 @@
 # NOTE: this script is for ALL associations regardless their score!!!
 ###############################################################################
 #
-# usage:./total_statistics.awk /data/dictionary/prego_unicellular_ncbi.tsv /data/dictionary/database_groups.tsv nodes.dmp \
+# usage:./total_statistics.awk /data/dictionary/prego_unicellular_ncbi.tsv nodes.dmp \
 # /data/textmining/database_pairs.tsv /data/experiments/database_pairs.tsv \
 # /data/knowledge/database_pairs.tsv
 #
 ###############################################################################
 BEGIN {
-    FS="\t"
-    # Field names initialization for better readability
-    type_1=1; id_1=2; type_2=3; id_2=4; z_score=5; score=6
 
+    FS="\t"
+    # Field names initialization of the first 4 columns for better readability
+    type_1=1; id_1=2; type_2=3; id_2=4
 
     }
 # Load the data in associative arrays.
@@ -33,57 +33,80 @@ BEGIN {
     unicellular_taxa[$2]=1
 
 }
-# load the database_groups.tsv from the dictionary and filter microbes only
-(ARGIND==2 && $1==-2 && ($4 in unicellular_taxa)){
-
-    microbes[$2]=$4
-
-}
-# Load the third file, NCBI taxonomy dump file with NCBI Ids and ranks.
-(ARGIND==3){
+# Load the second file, NCBI taxonomy dump file with NCBI Ids and ranks.
+(ARGIND==2){
 
     rank[$1]=$5;
 }
 #Load all the database pairs files from all sources and channels of PREGO
-(ARGIND>3 && $type_1 == -2 && ($2 in microbes)){
+(ARGIND>2 ){
 
-    taxa[$id_1]=$0
+    file = FILENAME
+    # remove the NCBI_ID from the files
+    gsub(/NCBI_ID:/, "", $0);
+    
+    if ($id_1 in unicellular_taxa){
+        # count the taxa - environments associations first all together and then by
+        # channer and source.
+        # The textmining database_pairs file doesn't have a channel field so this
+        # if searches whether the file comes from textmining 
+        # Here a multidimentional array is created that counts the number of 
+        # associations per file, channel and types
 
-    # count the taxa - environments associations
-    if ($type_2 == -27){
-        
-        taxa_env[$id_1" "$id_2]++;
-        env[$id_2]++;
-
-    }
-    # count the taxa - processes associations
-    else if ($type_2 == -21 || $type_2==-20){
-
-        proc[$id_2]++;
-        taxa_proc[$id_1" "$id_2]++;
+        total_associations[$type_1][$type_2]++
+        total_associations_taxonomy[$type_1][$type_2][rank[$id_1]]++
+    
+        if (file ~ /textmining/) {
+    
+            associations[file]["textmining"][$type_1][$type_2]++
+            if ($type_1 == -2){
+    
+                associations_taxonomy[file]["textmining"][$type_1][$type_2][rank[$id_1]]++
+    
+            }
+        }
+        else {
+    
+            associations[file][$5][$type_1][$type_2]++
+            
+            if ($type_1 == -2){
+            
+                associations_taxonomy[file][$5][$type_1][$type_2][rank[$id_1]]++
+    
+            }
+        }
     }
 }
 END{
 
-    print "source" "\t" "Unique taxa" "\t" "Unique environments" "\t" "Unique processes" "\t" "Taxa associations with Environments" "\t" "Taxa associations with processes" "\t" "Total interactions";
+    print "file" FS "channel" FS "type 1" FS "type 2" FS "taxonomy" FS "# associations"
 
-    print  "PREGO total" "\t" length(taxa) "\t" length(env) "\t" length(proc) "\t" length(taxa_env) "\t" length(taxa_proc) "\t" length(taxa_proc)+length(taxa_env);
+    for (type1 in total_associations){
+        for (type2 in total_associations[type1]){
+            print "all" FS "all" FS type1 FS type2 FS "total" FS total_associations[type1][type2]
 
-    for (j in taxa){
-             
-        taxa_rank[rank[j]]++
-        taxonomy[microbes[j]]++
-#        print j "\t" taxa[j]
+            for (taxonomy in total_associations_taxonomy[type1][type2]){
+
+                print "all" FS "all" FS type1 FS type2 FS taxonomy FS total_associations_taxonomy[type1][type2][taxonomy]
+
+            }
+        }
     }
 
-    for (r in taxa_rank){
+    for (file in associations){
+        for (channel in associations[file]){
+            for (type1 in associations[file][channel]){
+                for (type2 in associations[file][channel][type1]){
+                    print file FS channel FS type1 FS type2 FS "total" FS associations[file][channel][type1][type2]
 
-        print r "\t" taxa_rank[r]
+                    for (taxonomy in associations_taxonomy[file][channel][type1][type2]){
+
+                        print file FS channel FS type1 FS type2 FS taxonomy FS associations_taxonomy[file][channel][type1][type2][taxonomy]
+
+                    }
+                }
+            }
+        }
     }
-
-#    for (m in taxonomy){
-#
-#        print m "\t" taxonomy[m]
-#    }
 }
 
