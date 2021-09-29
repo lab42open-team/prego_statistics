@@ -16,7 +16,7 @@
 # usage:./total_statistics.awk /data/dictionary/prego_unicellular_ncbi.tsv nodes.dmp \
 # /data/textmining/database_pairs.tsv /data/experiments/database_pairs.tsv \
 # /data/knowledge/database_pairs.tsv
-#
+# NOTE this script doesn't take into account score
 ###############################################################################
 BEGIN {
 
@@ -57,22 +57,15 @@ BEGIN {
         total_associations_taxonomy[$type_1][$type_2][rank[$id_1]]++
     
         if (file ~ /textmining/) {
-    
             associations[file]["textmining"][$type_1][$type_2]++
             if ($type_1 == -2){
-    
                 associations_taxonomy[file]["textmining"][$type_1][$type_2][rank[$id_1]]++
-    
             }
         }
         else {
-    
             associations[file][$5][$type_1][$type_2]++
-            
             if ($type_1 == -2){
-            
                 associations_taxonomy[file][$5][$type_1][$type_2][rank[$id_1]]++
-    
             }
         }
     }

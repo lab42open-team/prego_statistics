@@ -15,7 +15,7 @@
 #
 # usage:  ./entities_statistics.awk /data/dictionary/prego_unicellular_ncbi.tsv \
 # nodes.dmp /data/experiments/database_pairs.tsv
-#
+# NOTE this script doesn't take into account score!
 ###############################################################################
 
 
