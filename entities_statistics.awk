@@ -34,39 +34,35 @@ BEGIN {
 }
 # Load the third file, NCBI taxonomy dump file with NCBI Ids and ranks.
 (ARGIND==2){
-    
     rank[$1]=$5;
-    
 }
+#Load all the rest files
 (ARGIND>2){
 
     file = FILENAME
     # remove the NCBI_ID prefix from files
     gsub(/NCBI_ID:/, "", $0);
-
     if (($id_1 in unicellular_taxa) || ($id_2 in unicellular_taxa)){
-
         if ($1 == -2){
             entities["all"]["all"][$type_1][rank[$2]][$id_1]=1
         }
         else{
             entities["all"]["all"][$type_1]["no rank"][$id_1]=1
         }
-
+        # Text mining file doesn't have a source field so this condition
+        # checks whether the path has the word textmining
         if (file ~ /textmining/) {
-    
+            # Only taxa have a rank for the moment so we have to condition
+            # that as well.
             if ($1 == -2){
-    
                entities[file]["textmining"][$type_1][rank[$2]][$2]=1
             }
             else  {
-            
                 entities[file]["textmining"][$type_1]["no rank"][$id_1]=1
             }
         }
         else {
             if ($1 == -2){
-    
                 entities[file][$5][$type_1][rank[$id_1]][$id_1]=1
             }
             else  {
