@@ -57,6 +57,7 @@ BEGIN {
             # that as well.
             if ($1 == -2){
                entities[file]["textmining"][$type_1][rank[$2]][$2]=1
+               entities[file]["textmining"][$type_1]["all"][$2]=1
             }
             else  {
                 entities[file]["textmining"][$type_1]["no rank"][$id_1]=1
@@ -65,6 +66,7 @@ BEGIN {
         else {
             if ($1 == -2){
                 entities[file][$5][$type_1][rank[$id_1]][$id_1]=1
+                entities[file][$5][$type_1]["all"][$id_1]=1
             }
             else  {
                 entities[file][$5][$type_1]["no rank"][$id_1]=1
