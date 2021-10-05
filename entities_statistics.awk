@@ -45,6 +45,7 @@ BEGIN {
     if (($id_1 in unicellular_taxa) || ($id_2 in unicellular_taxa)){
         if ($1 == -2){
             entities["all"]["all"][$type_1][rank[$2]][$id_1]=1
+            entities["all"]["all"][$type_1]["all"][$id_1]=1
         }
         else{
             entities["all"]["all"][$type_1]["no rank"][$id_1]=1
