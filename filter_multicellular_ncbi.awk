@@ -1,10 +1,19 @@
 #! /usr/bin/gawk -f
+###############################################################################
+# script name: filter_multicellular_ncbi.awk
+# path on oxygen: ?
+# developed by: Savvas Paragkamian
+# framework: PREGO - WP4
+###############################################################################
+# GOAL:
 # This script creates a tsv file with all the NCBI ids that are multicellular taxa and
 # thus have to be hidden from the PREGO interface.
 # This is the reverse script of the filter_unicellular_ncbi.awk. 
 # The only difference between them is the negation in the line 137.
+###############################################################################
 # How to run
 # ./filter_multicellular_ncbi.awk /data/dictionary/METdb_GENOMIC_REFERENCE_DATABASE_FOR_MARINE_SPECIES.csv /data/dictionary/database_groups.tsv > prego_multicellular_ncbi.tsv
+###############################################################################
 
 BEGIN {
     ## Two conditional field separators. CAREFUL! 

@@ -1,10 +1,19 @@
 #! /usr/bin/gawk -f
+###############################################################################
+# script name: filter_unicellular_ncbi.awk
+# path on oxygen: ?
+# developed by: Savvas Paragkamian
+# framework: PREGO - WP4
+###############################################################################
+# GOAL:
 # This script creates a tsv file with all the NCBI ids that are multicellular taxa and
 # thus have to be hidden from the PREGO interface.
 # This is the reverse script of the filter_multicellular_ncbi.awk. 
 # The only difference between them is the negation in the line 139.
+###############################################################################
 # How to run
 # ./filter_unicellular_ncbi.awk /data/dictionary/METdb_GENOMIC_REFERENCE_DATABASE_FOR_MARINE_SPECIES.csv /data/dictionary/database_groups.tsv > prego_unicellular_ncbi.tsv
+###############################################################################
 
 BEGIN {
 
@@ -119,7 +128,9 @@ BEGIN {
     selected_microbe_high_level_taxa[$10]=1;
 
 }
-# load the database_groups.tsv from the dictionary and filter microbes only
+# load the database_groups.tsv from the dictionary
+# and check if parent microbes are in the selected_microbe_high_level_taxa
+# and print keep the children column (second)
 (ARGIND==2 && $1==-2){
 
     all_taxa[$2]=1;
@@ -133,6 +144,7 @@ BEGIN {
 }
 END{
 
+    # Print all taxa if and only if they are included in the microbe taxa array.
     for (tax_id in all_taxa){
 
         if (tax_id in microbe_taxa){
@@ -140,5 +152,11 @@ END{
             print -2 "\t" tax_id;
 
         }
+    }
+    # Print the ids for the parent taxa of unicellular microbes
+    for (selected_microbes in selected_microbe_high_level_taxa){
+
+        print -2 "\t" selected_microbes;
+
     }
 }

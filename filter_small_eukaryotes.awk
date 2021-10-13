@@ -1,10 +1,18 @@
 #! /usr/bin/gawk -f
-# This script creates a tsv file with all the NCBI ids that are multicellular taxa and
-# thus have to be hidden from the PREGO interface.
-# This is the reverse script of the filter_multicellular_ncbi.awk. 
-# The only difference between them is the negation in the line 139.
+###############################################################################
+# script name: filter_small_eukaryotes.awk
+# path on oxygen: ?
+# developed by: Savvas Paragkamian
+# framework: PREGO - WP4
+###############################################################################
+# GOAL:
+# This script creates a tsv file with all the NCBI ids that are unicellular 
+# eukaryotic taxa. This is the same script with the filter_unicellular_ncbi.awk
+# except the archaea and bacteria are omitted.
+###############################################################################
 # How to run
 # ./filter_small_eukaryotes.awk /data/dictionary/METdb_GENOMIC_REFERENCE_DATABASE_FOR_MARINE_SPECIES.csv /data/dictionary/database_groups.tsv > prego_small_eukaryotes_ncbi.tsv
+###############################################################################
 
 BEGIN {
 
@@ -135,5 +143,11 @@ END{
             print -2 "\t" tax_id;
 
         }
+    }
+    # Print the ids for the parent taxa of unicellular microbes
+    for (selected_microbes in selected_microbe_high_level_taxa){
+
+        print -2 "\t" selected_microbes;
+
     }
 }
