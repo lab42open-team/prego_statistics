@@ -18,7 +18,6 @@
 # NOTE this script doesn't take into account score!
 ###############################################################################
 
-
 BEGIN {
     FS="\t"
     # Field names initialization for better readability
@@ -40,15 +39,15 @@ BEGIN {
 (ARGIND>2){
 
     file = FILENAME
-    # remove the NCBI_ID prefix from files
-    gsub(/NCBI_ID:/, "", $0);
-    if (($id_1 in unicellular_taxa) || ($id_2 in unicellular_taxa)){
+
+    if (($2 in unicellular_taxa) || ($4 in unicellular_taxa)){
         if ($1 == -2){
-            entities["all"]["all"][$type_1][rank[$2]][$id_1]=1
-            entities["all"]["all"][$type_1]["all"][$id_1]=1
+            entities["all"]["all"][$1][rank[$2]][$2]=1
+            entities["all"]["all"][$1]["all"][$2]=1
+            entities["all"]["all"][$3]["no rank"][$4]=1
         }
         else{
-            entities["all"]["all"][$type_1]["no rank"][$id_1]=1
+            entities["all"]["all"][$1]["no rank"][$2]=1
         }
         # Text mining file doesn't have a source field so this condition
         # checks whether the path has the word textmining
@@ -56,20 +55,23 @@ BEGIN {
             # Only taxa have a rank for the moment so we have to condition
             # that as well.
             if ($1 == -2){
-               entities[file]["textmining"][$type_1][rank[$2]][$2]=1
-               entities[file]["textmining"][$type_1]["all"][$2]=1
+               entities[file]["textmining"][$1][rank[$2]][$2]=1
+               entities[file]["textmining"][$1]["all"][$2]=1
             }
-            else  {
-                entities[file]["textmining"][$type_1]["no rank"][$id_1]=1
+            else{
+                entities[file]["textmining"][$1]["no rank"][$2]=1
             }
         }
         else {
             if ($1 == -2){
-                entities[file][$5][$type_1][rank[$id_1]][$id_1]=1
-                entities[file][$5][$type_1]["all"][$id_1]=1
+                entities[file][$5][$1][rank[$2]][$2]=1
+                entities[file][$5][$1]["all"][$2]=1
+                #count the entities associated with -2. There are cases where
+                #the associations are not symmetric between entities.
+                entities[file][$5][$3]["no rank"][$4]=1
             }
-            else  {
-                entities[file][$5][$type_1]["no rank"][$id_1]=1
+            else{
+                entities[file][$5][$1]["no rank"][$2]=1
             }
         }
     }
@@ -87,7 +89,7 @@ END{
 
                 for (taxonomy in entities[file][channel][type]){
 
-                    print file FS channel FS type FS taxonomy FS length( entities[file][channel][type][taxonomy])
+                    print file FS channel FS type FS taxonomy FS length(entities[file][channel][type][taxonomy])
 
                 }
             }
