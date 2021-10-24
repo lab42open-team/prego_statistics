@@ -32,21 +32,31 @@ BEGIN {
     unicellular_taxa[$2]=1
 
 }
-# Load the third file, NCBI taxonomy dump file with NCBI Ids and ranks.
+# Load the third file and fourth file for the higher taxonomy.
 (ARGIND==2){
-    rank[$1]=$5;
+    higher_taxa[$2]=$3"\t"$4;
 }
 (ARGIND==3){
+    higher_taxa[$2]=$3"\t"$4;
+}
+# load database_preferred.tsv
+(ARGIND==4){
     names[$2]=$3
 }
+#load database_groups
+(ARGIND==5){
+    if ($4 in higher_taxa){
+    child_parent[$2]=$4 # is this unique? and why?
+    }
+}
 #Load all the rest files
-(ARGIND>2){
+(ARGIND>5){
 
     file = FILENAME
 
     if (($2 in unicellular_taxa) || ($4 in unicellular_taxa)){
         if ($1 == -2){
-            entities["all"]["all"][$1][rank[$2]][$2]=1
+            entities["all"]["all"][$1][child_parent[$2]][$2]=1
             entities["all"]["all"][$1]["all"][$2]=1
             entities["all"]["all"][$3]["no rank"][$4]=1
         }
@@ -59,7 +69,7 @@ BEGIN {
             # Only taxa have a rank for the moment so we have to condition
             # that as well.
             if ($1 == -2){
-               entities[file]["textmining"][$1][rank[$2]][$2]=1
+               entities[file]["textmining"][$1][child_parent[$2]][$2]=1
                entities[file]["textmining"][$1]["all"][$2]=1
             }
             else{
@@ -68,7 +78,7 @@ BEGIN {
         }
         else {
             if ($1 == -2){
-                entities[file][$5][$1][rank[$2]][$2]=1
+                entities[file][$5][$1][child_parent[$2]][$2]=1
                 entities[file][$5][$1]["all"][$2]=1
                 #count the entities associated with -2. There are cases where
                 #the associations are not symmetric between entities.
@@ -83,7 +93,7 @@ BEGIN {
 #print statistics for each source.
 END{ 
 
-    print "file" FS "channel" FS "type" FS "taxonomy" FS "Unique entities"
+    print "file" FS "channel" FS "type" FS "higher taxonomy" FS "superkingdom" FS "name" FS "#entities"
 
     for (file in entities){
 
@@ -93,7 +103,7 @@ END{
 
                 for (taxonomy in entities[file][channel][type]){
 
-                    print file FS channel FS type FS taxonomy FS length(entities[file][channel][type][taxonomy])
+                    print file FS channel FS type FS taxonomy FS names[taxonomy] FS higher_taxa[taxonomy] FS length(entities[file][channel][type][taxonomy])
 
                 }
             }
