@@ -9,20 +9,22 @@
 # GOAL:
 # Aim of this script is to calculate the contents of the associations pairs 
 # from all the prediction channels, text mining, experiments and knowledge.
-# Theare  terms of NCBI ids, ENVO ids, GO ids as well as their associations.
+# There are terms of NCBI ids, ENVO ids, GO ids as well as their associations.
 # NOTE: this script is for ALL associations regardless their score!!!
 ###############################################################################
 #
 # usage:./associations_intersection.awk \ 
-# /data/dictionary/prego_unicellular_ncbi.tsv \ 
-# /data/dictionary/database_groups.tsv nodes.dmp \
+# /data/dictionary/prego_unicellular_ncbi.tsv \
+# /data/dictionary/ncbi/ncbi_taxonomy/nodes.dmp \
 # /data/textmining/database_pairs.tsv /data/experiments/database_pairs.tsv \
 # /data/knowledge/database_pairs.tsv
 #
 ###############################################################################
 BEGIN {
     FS="\t"
-    type_1=1; id_1=2; type_2=3; id_2=4; z_score=5; score=6
+
+    type_1=1; id_1=2; type_2=3; id_2=4; source=5 ; evidence=7; score=6; 
+    explicit=7 ; url=8;
 
 }
 # Load the data in associative arrays.
@@ -40,12 +42,12 @@ BEGIN {
 
 }
 # Load the third file, NCBI taxonomy dump file with NCBI Ids and ranks.
-(ARGIND==3){
+(ARGIND==2){
 
     rank[$1]=$5;
 }
 #Load all the database pairs files from all sources and channels of PREGO
-(ARGIND>3 && $type_1 == -2 && ($2 in microbes)){
+(ARGIND>3 && (($2 in unicellular_taxa) || ($4 in unicellular_taxa))){
 
     # keep the channel name from the FILENAME and add it in the array
     channels = gensub(/\/(.+)\/(.+)\/(.+)/,"\\2","g" ,FILENAME)

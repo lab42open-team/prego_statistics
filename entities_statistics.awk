@@ -15,13 +15,13 @@
 #
 # usage:  ./entities_statistics.awk /data/dictionary/prego_unicellular_ncbi.tsv \
 # nodes.dmp /data/experiments/database_pairs.tsv
-# NOTE this script doesn't take into account score!
 ###############################################################################
 
 BEGIN {
     FS="\t"
-    # Field names initialization for better readability
-    type_1=1; id_1=2; type_2=3; id_2=4; z_score=5; score=6
+    # Field names for better readability
+    #type_1=1; id_1=2; type_2=3; id_2=4; source=5 ; evidence=7; score=6; 
+    #explicit=7 ; url=8;
 
     }
 # Load the data in associative arrays.

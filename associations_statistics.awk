@@ -1,7 +1,7 @@
 #! /usr/bin/gawk -f
 
 ###############################################################################
-# script name: total_statistics.awk
+# script name: associations_statistics.awk
 # path on oxygen: ?
 # developed by: Savvas Paragkamian
 # framework: PREGO - WP4
@@ -13,7 +13,8 @@
 # NOTE: this script is for ALL associations regardless their score!!!
 ###############################################################################
 #
-# usage:./associations_statistics.awk /data/dictionary/prego_unicellular_ncbi.tsv nodes.dmp \
+# usage:./associations_statistics.awk /data/dictionary/prego_unicellular_ncbi.tsv \
+# /data/dictionary/ncbi/nodes.dmp \
 # /data/textmining/database_pairs.tsv /data/experiments/database_pairs.tsv \
 # /data/knowledge/database_pairs.tsv
 # NOTE this script doesn't take into account score
