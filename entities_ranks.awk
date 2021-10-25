@@ -2,7 +2,7 @@
 
 ###############################################################################
 # script name: entities_ranks.awk
-# path on oxygen: ?
+# path on oxygen: /data/databases/scripts/prego_statistics/
 # developed by: Savvas Paragkamian
 # framework: PREGO - WP4
 ###############################################################################
