@@ -2,7 +2,7 @@
 
 ###############################################################################
 # script name: entities_statistics.awk
-# path on oxygen: ?
+# path on oxygen: /data/databases/scripts/prego_statistics
 # developed by: Savvas Paragkamian
 # framework: PREGO - WP4
 ###############################################################################
@@ -13,8 +13,11 @@
 # NOTE: this script is for ALL associations regardless their score!!!
 ###############################################################################
 #
-# usage:  ./entities_statistics.awk /data/dictionary/prego_unicellular_ncbi.tsv \
-# nodes.dmp /data/experiments/database_pairs.tsv
+# usage:
+# ./entities_statistics.awk /data/dictionary/prego_unicellular_ncbi.tsv \
+# /data/dictionary/ncbi/ncbi_taxonomy/nodes.dmp \
+# /data/experiments/database_pairs.tsv /data/textmining/database_pairs.tsv \
+# /data/knowledge/database_pairs.tsv
 ###############################################################################
 
 BEGIN {

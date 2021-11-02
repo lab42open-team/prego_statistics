@@ -12,14 +12,15 @@
 # The only difference between them is the negation in the line 139.
 ###############################################################################
 # How to run
-# ./filter_unicellular_ncbi.awk /data/dictionary/METdb_GENOMIC_REFERENCE_DATABASE_FOR_MARINE_SPECIES.csv /data/dictionary/database_groups.tsv > prego_unicellular_ncbi.tsv
+# ./filter_unicellular_ncbi.awk \
+# /data/dictionary/METdb_GENOMIC_REFERENCE_DATABASE_FOR_MARINE_SPECIES.csv \
+# /data/dictionary/database_groups.tsv > /data/dictionary/prego_unicellular_ncbi.tsv
 ###############################################################################
 
 BEGIN {
 
     ## Two conditional field separators. CAREFUL! 
     FS="[\t,]"
-    
 
     ## Bacteria and Archaea
     selected_microbe_high_level_taxa[2]=1;      # tax id 2 stands for Bacteria

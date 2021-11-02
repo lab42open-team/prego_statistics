@@ -2,7 +2,7 @@
 
 ###############################################################################
 # script name: associations_intersection.awk
-# path on oxygen: ?
+# path on oxygen: /data/databases/scripts/prego_statistics/
 # developed by: Savvas Paragkamian
 # framework: PREGO - WP4
 ###############################################################################
@@ -22,10 +22,6 @@
 ###############################################################################
 BEGIN {
     FS="\t"
-
-    type_1=1; id_1=2; type_2=3; id_2=4; source=5 ; evidence=7; score=6; 
-    explicit=7 ; url=8;
-
 }
 # Load the data in associative arrays.
 
@@ -33,12 +29,6 @@ BEGIN {
 
     #initiate an array with the desired NCBI ids to include only microbes.
     unicellular_taxa[$2]=1
-
-}
-# load the database_groups.tsv from the dictionary and filter microbes only
-(ARGIND==2 && $1==-2 && ($4 in unicellular_taxa)){
-
-    microbes[$2]=$4
 
 }
 # Load the third file, NCBI taxonomy dump file with NCBI Ids and ranks.
