@@ -14,8 +14,12 @@
 # NOTE: this script is for ALL associations regardless their score!!!
 ###############################################################################
 #
-# usage:  ./entities_ranks.awk /data/dictionary/prego_unicellular_ncbi.tsv \
-# /data/dictionary/ncbi/nodes.dmp /data/experiments/database_pairs.tsv
+# usage:  ./entities_ranks.awk 
+# /data/dictionary/prego_unicellular_ncbi.tsv \
+# /data/dictionary/ncbi/ncbi_taxonomy/nodes.dmp\ 
+# /data/dictionary/database_preferred.tsv \
+# /data/dictionary/database_groups.tsv \
+# /data/experiments/database_pairs.tsv
 ###############################################################################
 
 BEGIN {
@@ -23,6 +27,9 @@ BEGIN {
     # Field names for better readability
     #type_1=1; id_1=2; type_2=3; id_2=4; source=5 ; evidence=7; score=6; 
     #explicit=7 ; url=8;
+    superkingdoms["2"]="bacteria"
+    superkingdoms["2157"]="archaea"
+    #superkingdoms[2]="eukarya"
 
     }
 # Load the data in associative arrays.
@@ -33,35 +40,51 @@ BEGIN {
 
 }
 # Load the third file and fourth file for the higher taxonomy.
-(ARGIND==2){
-    higher_taxa[$2]=$3"\t"$4;
-}
-(ARGIND==3){
-    higher_taxa[$2]=$3"\t"$4;
+(ARGIND==2 ){
+    if ($5=="phylum"){
+        phyla[$1];
+    }
+    
+    if ($5=="family"){
+        families[$1];
+    }
 }
 # load database_preferred.tsv
-(ARGIND==4){
+(ARGIND==3){
     names[$2]=$3
 }
 #load database_groups
-(ARGIND==5){
-    if ($4 in higher_taxa){
-    child_parent[$2]=$4 # is this unique? and why?
+(ARGIND==4){
+    if ($4 in phyla){
+        child_phylum[$2]=$4 # is this unique? and why? because we kept only phyla
+                            # in higher taxa
+    }
+    if ($4 in families){
+        child_family[$2]=$4
+    }
+    if (($2 in unicellular_taxa) && ($4 in superkingdoms)){
+        unicellular_superkingdom[$2]=superkingdoms[$4];
+
     }
 }
 #Load all the rest files
-(ARGIND>5){
+(ARGIND>4){
 
     file = FILENAME
 
     if (($2 in unicellular_taxa) || ($4 in unicellular_taxa)){
         if ($1 == -2){
-            entities["all"]["all"][$1][child_parent[$2]][$2]=1
-            entities["all"]["all"][$1]["all"][$2]=1
-            entities["all"]["all"][$3]["no rank"][$4]=1
-        }
-        else{
-            entities["all"]["all"][$1]["no rank"][$2]=1
+            if ($2 in unicellular_superkingdom){
+                entities["all"]["all"][$1][child_phylum[$2]][unicellular_superkingdom[$2]][$2]=1
+                entities["all"]["all"][$1]["all"][unicellular_superkingdom[$2]][$2]=1
+                entities["all"]["all"][$3][child_phylum[$2]][unicellular_superkingdom[$2]][$4]=1
+                entities["all"]["all"][$3]["no rank"]["no rank"][$4]=1
+            }
+            if (!($2 in unicellular_superkingdom)){
+                entities["all"]["all"][$1][child_phylum[$2]]["eukaryotes"][$2]=1
+                entities["all"]["all"][$1]["all"]["eukaryotes"][$2]=1
+                entities["all"]["all"][$3][child_phylum[$2]]["eukaryotes"][$4]=1
+            }
         }
         # Text mining file doesn't have a source field so this condition
         # checks whether the path has the word textmining
@@ -69,23 +92,34 @@ BEGIN {
             # Only taxa have a rank for the moment so we have to condition
             # that as well.
             if ($1 == -2){
-               entities[file]["textmining"][$1][child_parent[$2]][$2]=1
-               entities[file]["textmining"][$1]["all"][$2]=1
-            }
-            else{
-                entities[file]["textmining"][$1]["no rank"][$2]=1
+                if ($2 in unicellular_superkingdom){
+                    entities[file]["textmining"][$1][child_phylum[$2]][unicellular_superkingdom[$2]][$2]=1
+                    entities[file]["textmining"][$1]["all"][unicellular_superkingdom[$2]][$2]=1
+                    entities[file]["textmining"][$3][child_phylum[$2]][unicellular_superkingdom[$2]][$4]=1
+                    entities[file]["textmining"][$3]["no rank"][unicellular_superkingdom[$2]][$4]=1
+                } 
+                if (!($2 in unicellular_superkingdom)){
+                    entities[file]["textmining"][$1][child_phylum[$2]]["eukaryotes"][$2]=1
+                    entities[file]["textmining"][$1]["all"]["eukaryotes"][$2]=1
+                    entities[file]["textmining"][$3][child_phylum[$2]]["eukaryotes"][$4]=1
+                }
             }
         }
         else {
             if ($1 == -2){
-                entities[file][$5][$1][child_parent[$2]][$2]=1
-                entities[file][$5][$1]["all"][$2]=1
-                #count the entities associated with -2. There are cases where
-                #the associations are not symmetric between entities.
-                entities[file][$5][$3]["no rank"][$4]=1
-            }
-            else{
-                entities[file][$5][$1]["no rank"][$2]=1
+                if ($2 in unicellular_superkingdom){
+                    entities[file][$5][$1][child_phylum[$2]][unicellular_superkingdom[$2]][$2]=1
+                    entities[file][$5][$1]["all"][unicellular_superkingdom[$2]][$2]=1
+                    #count the entities associated with -2. There are cases where
+                    #the associations are not symmetric between entities.
+                    entities[file][$5][$3][child_phylum[$2]][unicellular_superkingdom[$2]][$4]=1
+                    entities[file][$5][$3]["no rank"][unicellular_superkingdom[$2]][$4]=1
+                }
+                if (!($2 in unicellular_superkingdom)){
+                    entities[file][$5][$1][child_phylum[$2]]["eukaryotes"][$2]=1
+                    entities[file][$5][$1]["all"]["eukaryotes"][$2]=1
+                    entities[file][$5][$3][child_phylum[$2]]["eukaryotes"][$4]=1
+                }
             }
         }
     }
@@ -93,7 +127,7 @@ BEGIN {
 #print statistics for each source.
 END{ 
 
-    print "file" FS "channel" FS "type" FS "higher taxonomy" FS "superkingdom" FS "name" FS "#entities"
+    print "file" FS "channel" FS "type" FS "phylum id" FS "superkingdom" FS "phylum name" FS "#entities"
 
     for (file in entities){
 
@@ -101,9 +135,11 @@ END{
 
             for (type in entities[file][channel]){
 
-                for (taxonomy in entities[file][channel][type]){
+                for (phylum_id in entities[file][channel][type]){
 
-                    print file FS channel FS type FS taxonomy FS names[taxonomy] FS higher_taxa[taxonomy] FS length(entities[file][channel][type][taxonomy])
+                    for (superkingdom in entities[file][channel][type][phylum_id]){
+                        print file FS channel FS type FS phylum_id FS superkingdom FS names[phylum_id] FS length(entities[file][channel][type][phylum_id][superkingdom])
+                    }
 
                 }
             }
