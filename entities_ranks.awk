@@ -127,7 +127,7 @@ BEGIN {
 #print statistics for each source.
 END{ 
 
-    print "file" FS "channel" FS "type" FS "phylum id" FS "superkingdom" FS "phylum name" FS "#entities"
+    print "file" FS "channel" FS "type" FS "phylum_id" FS "superkingdom" FS "phylum_name" FS "no_entities"
 
     for (file in entities){
 
