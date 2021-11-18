@@ -11,9 +11,11 @@
 # Checks for duplicated Ids and empty fields.
 ###############################################################################
 #
-# usage: 
+# usage for all PubMed (Abstracts and PMC): 
 # gunzip -c /data/databases/pubmed/pubmed*.tsv.gz | ./pubmed_statistics.awk
-#
+# 
+# usage for only the PMC
+# gunzip -c /data/databases/pubmed/pubmed_full.tsv.gz | ./pubmed_statistics.awk
 ###############################################################################
 BEGIN {
     FS="\t"
@@ -25,7 +27,7 @@ BEGIN {
 {times[$1]++}
 
 #count all ids of pubmed abstracts that have year and text
-($year!~/null/ && $abstract!~/null/){full_info[$1]=$0}
+($year!~/null/ && $abstract!~/null/){full_info[$1]=1}
 END{
     print "Unique abstracts" "\t" length(times); 
     for (i in times){sum+=times[i]}; 
