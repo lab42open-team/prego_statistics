@@ -24,12 +24,8 @@
 
 BEGIN {
     FS="\t"
-    # Field names for better readability
-    #type_1=1; id_1=2; type_2=3; id_2=4; source=5 ; evidence=7; score=6; 
-    #explicit=7 ; url=8;
     superkingdoms["2"]="bacteria"
     superkingdoms["2157"]="archaea"
-    #superkingdoms[2]="eukarya"
 
     }
 # Load the data in associative arrays.
@@ -72,7 +68,7 @@ BEGIN {
 
     file = FILENAME
 
-    if (($2 in unicellular_taxa) || ($4 in unicellular_taxa)){
+    if ($2 in unicellular_taxa){
         if ($1 == -2){
             if ($2 in unicellular_superkingdom){
                 entities["all"]["all"][$1][child_phylum[$2]][unicellular_superkingdom[$2]][$2]=1
