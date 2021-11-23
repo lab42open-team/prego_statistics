@@ -5,6 +5,7 @@ library(ggbreak)   #
 library(grid)      # to enable unit.pmax()
 library(ggpubr)    # to enable ggarrange()
 library(gridExtra) # to enabel grid.arrange()
+library("scales")  # to enable comma_format()
 
 
 data_path  <- "/data/databases/scripts/prego_statistics/"
@@ -25,12 +26,15 @@ plotFun <- function(input_df, start, end){
 
     domain <- as.character(unique(input_df$superkingdom))
     print(domain)
-    p <- ggplot(input_df,
-                aes(x = no_entities, y = reorder(phylum_name, -no_entities),
+    p <- ggplot(input_df
+                ) +
+            geom_col(
+                     position="dodge",
+                aes(x    = no_entities,
+                    y    = reorder(phylum_name, -no_entities),
                     fill = as.character(type)
                     )
-                ) +
-            geom_col(position="dodge") +
+                     ) +
             ggtitle(domain)+
             #scale_x_break(c(start, end), scales = 0.2) +
             scale_fill_manual(name = "Entity types",
@@ -41,7 +45,12 @@ plotFun <- function(input_df, start, end){
                                        "-23"="#e66101",
                                        "-27"="#8793Af")
                               )+
-            scale_x_continuous(trans='log10')+
+            scale_x_continuous(trans  = 'log10', 
+                               name   = "Number of entities",
+                               n.breaks = 4,
+                               labels = label_comma()
+                               #label_number()
+                               )+
             theme_bw() +
             theme(
                   axis.text    = element_text(size =  5),
