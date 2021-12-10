@@ -20,15 +20,11 @@
 # /data/knowledge/database_pairs.tsv
 # NOTE this script doesn't take into account score
 ###############################################################################
-BEGIN {
+BEGIN{
 
     FS="\t"
-    # Field names initialization of the first 4 columns for better readability
-    type_1=1; id_1=2; type_2=3; id_2=4
-
-    }
 # Load the data in associative arrays.
-
+}
 (ARGIND==1) {
 
     #initiate an array with the desired NCBI ids to count only microbes.
@@ -44,31 +40,33 @@ BEGIN {
 (ARGIND>2 ){
 
     file = FILENAME
-    # remove the NCBI_ID from the files
-    gsub(/NCBI_ID:/, "", $0);
     
-    if ($id_1 in unicellular_taxa){
-        # count the taxa - environments associations first all together and then by
-        # channer and source.
-        # The textmining database_pairs file doesn't have a channel field so this
-        # if searches whether the file comes from textmining 
-        # Here a multidimentional array is created that counts the number of 
-        # associations per file, channel and types
+    # count the taxa - environments associations first all together and then by
+    # channer and source.
+    # The textmining database_pairs file doesn't have a channel field so this
+    # if searches whether the file comes from textmining 
+    # Here a multidimentional array is created that counts the number of 
+    # associations per file, channel and types
 
-        total_associations[$type_1][$type_2]++
-        total_associations_taxonomy[$type_1][$type_2][rank[$id_1]]++
+    total_associations[$1][$3]++
     
-        if (file ~ /textmining/) {
-            associations[file]["textmining"][$type_1][$type_2]++
-            if ($type_1 == -2){
-                associations_taxonomy[file]["textmining"][$type_1][$type_2][rank[$id_1]]++
-            }
+    if ($1==-2 && ($2 in unicellular_taxa)){
+        total_associations_taxonomy[$1][$3][rank[$2]]++
+    }
+    if (file ~ /textmining/) {
+        associations[file]["textmining"][$1][$3]++
+        # taxonomy counts
+        if ($1==-2 && ($2 in unicellular_taxa)){
+
+            associations_taxonomy[file]["textmining"][$1][$3][rank[$2]]++
         }
-        else {
-            associations[file][$5][$type_1][$type_2]++
-            if ($type_1 == -2){
-                associations_taxonomy[file][$5][$type_1][$type_2][rank[$id_1]]++
-            }
+    }
+    else {
+        associations[file][$5][$1][$3]++
+        
+        # taxonomy counts
+        if ($1==-2 && ($2 in unicellular_taxa)){
+            associations_taxonomy[file][$5][$1][$3][rank[$2]]++
         }
     }
 }
@@ -80,10 +78,11 @@ END{
         for (type2 in total_associations[type1]){
             print "all" FS "all" FS type1 FS type2 FS "total" FS total_associations[type1][type2]
 
-            for (taxonomy in total_associations_taxonomy[type1][type2]){
+            if (type1==-2){
+                for (taxonomy in total_associations_taxonomy[type1][type2]){
 
-                print "all" FS "all" FS type1 FS type2 FS taxonomy FS total_associations_taxonomy[type1][type2][taxonomy]
-
+                    print "all" FS "all" FS type1 FS type2 FS taxonomy FS total_associations_taxonomy[type1][type2][taxonomy]
+                }
             }
         }
     }
@@ -94,10 +93,12 @@ END{
                 for (type2 in associations[file][channel][type1]){
                     print file FS channel FS type1 FS type2 FS "total" FS associations[file][channel][type1][type2]
 
-                    for (taxonomy in associations_taxonomy[file][channel][type1][type2]){
+                    if (type1==-2){
 
-                        print file FS channel FS type1 FS type2 FS taxonomy FS associations_taxonomy[file][channel][type1][type2][taxonomy]
+                        for (taxonomy in associations_taxonomy[file][channel][type1][type2]){
 
+                            print file FS channel FS type1 FS type2 FS taxonomy FS associations_taxonomy[file][channel][type1][type2][taxonomy]
+                        }
                     }
                 }
             }
