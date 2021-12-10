@@ -6,4 +6,6 @@
 .Rhistory
 .RData
 *.swp
+*.swo
 *.dmp
+*.pdf
