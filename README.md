@@ -1,4 +1,6 @@
-# Contents
+# PREGO Contents statistics
+
+[![License](https://img.shields.io/badge/License-BSD_2--Clause-orange.svg)](https://opensource.org/licenses/BSD-2-Clause)
 
 This repo contains scripts that facilitate the anwsers to the following questions:
 
