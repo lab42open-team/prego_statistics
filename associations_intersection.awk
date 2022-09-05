@@ -47,22 +47,26 @@ BEGIN {
     # The value of this multidimentional array is the number of associations 
     # of a NCBI id with a specific type (i.e -21, -27) of a specific channel.
 
+    # this block is for the environments associations
     if ($1 == "-27"){
 
         if ($3==-2){
-
+    # if the environment is associated with taxa then keep only unicellural
             if ($4 in unicellular_taxa){
 
                 environments_associations[channels][$3][$2]++;
             }
         }
+    # if the environment isn't associated with taxa keep all
         else {
             environments_associations[channels][$3][$2]++;
         }
     }
-
+ 
+    # this block is for the biological processes associations
     if ($1 == "-21"){
 
+    # if the process is associated with taxa then keep only unicellural
         if ($3==-2){
 
             if ($4 in unicellular_taxa){
@@ -77,9 +81,19 @@ BEGIN {
         }
     }
 
+    # this block is for the taxa associations
     if ($1 == "-2" && $2 in unicellular_taxa){
+        if ($3==-2){
+
+            if ($4 in unicellular_taxa){
+
+                taxa_associations[channels][$3][$2]++;
+            }
+        }
+        else{
 
         taxa_associations[channels][$3][$2]++;
+        }
 
     }
 
