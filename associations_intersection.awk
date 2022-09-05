@@ -114,9 +114,9 @@ END{
     }
     for (channel in environments_associations){
 
-        for (type2 in environmets_associations[channel]){
+        for (type2 in environments_associations[channel]){
 
-            for (env in environmets_associations[channel][type2]){
+            for (env in environments_associations[channel][type2]){
 
                 print "-27" "\t" env "\t" environments_associations[channel][type2][env] "\t" type2 "\t" channel "\t" "na"
 
