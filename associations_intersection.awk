@@ -37,7 +37,7 @@ BEGIN {
     rank[$1]=$5;
 }
 #Load all the database pairs files from all sources and channels of PREGO
-(ARGIND>3 && (($2 in unicellular_taxa) || ($4 in unicellular_taxa))){
+(ARGIND>2){
 
     # keep the channel name from the FILENAME and add it in the array
     channels = gensub(/\/(.+)\/(.+)\/(.+)/,"\\2","g" ,FILENAME)
@@ -46,8 +46,42 @@ BEGIN {
     # The third dimension of the array is the ncbi id. 
     # The value of this multidimentional array is the number of associations 
     # of a NCBI id with a specific type (i.e -21, -27) of a specific channel.
-        
-    taxa_associations[channels][$3][$2]++;
+
+    if ($1 == "-27"){
+
+        if ($3==-2){
+
+            if ($4 in unicellular_taxa){
+
+                environments_associations[channels][$3][$2]++;
+            }
+        }
+        else {
+            environments_associations[channels][$3][$2]++;
+        }
+    }
+
+    if ($1 == "-21"){
+
+        if ($3==-2){
+
+            if ($4 in unicellular_taxa){
+
+                processes_associations[channels][$3][$2]++;
+            }
+        }
+        else {
+
+            processes_associations[channels][$3][$2]++;
+
+        }
+    }
+
+    if ($1 == "-2" && $2 in unicellular_taxa){
+
+        taxa_associations[channels][$3][$2]++;
+
+    }
 
 }
 # Print the results
@@ -59,7 +93,29 @@ END{
 
             for (taxon in taxa_associations[channel][type2]){
 
-                print taxon "\t" taxa_associations[channel][type2][taxon] "\t" type2 "\t" channel "\t" rank[taxon]
+                print "-2" "\t" taxon "\t" taxa_associations[channel][type2][taxon] "\t" type2 "\t" channel "\t" rank[taxon]
+
+            }
+        }
+    }
+    for (channel in environments_associations){
+
+        for (type2 in environmets_associations[channel]){
+
+            for (env in environmets_associations[channel][type2]){
+
+                print "-27" "\t" env "\t" environments_associations[channel][type2][env] "\t" type2 "\t" channel "\t" "na"
+
+            }
+        }
+    }
+    for (channel in processes_associations){
+
+        for (type2 in processes_associations[channel]){
+
+            for (proc in processes_associations[channel][type2]){
+
+                print "-21" "\t" proc "\t" processes_associations[channel][type2][proc] "\t" type2 "\t" channel "\t" "na"
 
             }
         }
