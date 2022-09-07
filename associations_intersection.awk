@@ -14,11 +14,12 @@
 ###############################################################################
 #
 # usage:./associations_intersection.awk \ 
-# /data/dictionary/prego_unicellular_ncbi.tsv \
-# /data/dictionary/ncbi/ncbi_taxonomy/nodes.dmp \
-# /data/textmining/database_pairs.tsv /data/experiments/database_pairs.tsv \
-# /data/knowledge/database_pairs.tsv
+# /path/to/prego_unicellular_ncbi.tsv \
+# /path/to/ncbi/ncbi_taxonomy/nodes.dmp \
+# /path/to/database_pairs.tsv /path/to/database_pairs.tsv \
+# /path/to/database_pairs.tsv
 #
+# Execution time: 56 minutes
 ###############################################################################
 BEGIN {
     FS="\t"
