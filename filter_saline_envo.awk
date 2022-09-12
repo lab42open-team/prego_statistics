@@ -11,6 +11,8 @@
 ###############################################################################
 # How to run
 # ./filter_saline_envo.awk database_pairs.tsv > prego_saline_envo.tsv
+# 
+# execution time in the whole knowledge base took 15 minutes
 ###############################################################################
 
 
@@ -47,12 +49,14 @@ BEGIN{
 }
 (ARGIND>1 && ($2 in envo)){
 
+    channel = gensub(/\/(.+)\/(.+)\/(.+)/,"\\2","g" ,FILENAME)
+
     if ($3==-2){
         if ($4 in unicellular_taxa){
-            print $0
+            print channel FS $0
         }
     }
     else {
-        print $0
+        print channel FS $0
     }
 }
